@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Vessel")]
-[assembly: AssemblyDescription("Vessel Framework is a Modern Cross-Platform Framework used to develop real-time interactive applications. It supports all modern Graphics APIs and offers a lott of flexibility")]
+[assembly: AssemblyDescription("Vessel Framework is a Modern Cross-Platform Framework used to develop real-time interactive applications. It supports all modern Graphics APIs and offers a lot of flexibility")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hyblocker")]
 [assembly: AssemblyProduct("Vessel")]
