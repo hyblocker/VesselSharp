@@ -17,6 +17,5 @@ Vessel exposes a unified API agnostic abstraction for interfacing with platform 
 
 ## Projects using Vessel
 This is a list of all projects that are using Vessel:
----
 
 > WIP
