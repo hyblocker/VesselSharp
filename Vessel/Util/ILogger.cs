@@ -6,6 +6,8 @@
 	/// </summary>
 	public interface ILogger
 	{
+		void Close();
+
 		void Verbose();
 		void Verbose(object message);
 		void Verbose(string message);

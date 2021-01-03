@@ -6,57 +6,31 @@ using System.Threading.Tasks;
 
 namespace Vessel
 {
-	public enum GraphicsAPI
-	{
-		/// <summary>
-		/// No backend given.
-		/// </summary>
-		Noop,
-
-		/// <summary>
-		/// Direct3D 9
-		/// </summary>
-		Direct3D9,
-
-		/// <summary>
-		/// Direct3D 11
-		/// </summary>
-		Direct3D11,
-
-		/// <summary>
-		/// Direct3D 12
-		/// </summary>
-		Direct3D12,
-
-		/// <summary>
-		/// PlayStation 4's GNM
-		/// </summary>
-		GNM,
-
-		/// <summary>
-		/// Apple Metal.
-		/// </summary>
-		Metal,
-
-		/// <summary>
-		/// OpenGL ES
-		/// </summary>
-		OpenGLES,
-
-		/// <summary>
-		/// OpenGL
-		/// </summary>
-		OpenGL,
-
-		/// <summary>
-		/// Vulkan
-		/// </summary>
-		Vulkan,
-
-		/// <summary>
-		/// Used during initialization; specifies that the library should
-		/// pick the best renderer for the running hardware and OS.
-		/// </summary>
-		Default
-	}
+    public enum GraphicsAPI : byte
+    {
+        /// <summary>
+        /// Direct3D 11.
+        /// </summary>
+        Direct3D11,
+        /// <summary>
+        /// Vulkan.
+        /// </summary>
+        Vulkan,
+        /// <summary>
+        /// OpenGL.
+        /// </summary>
+        OpenGL,
+        /// <summary>
+        /// Metal.
+        /// </summary>
+        Metal,
+        /// <summary>
+        /// OpenGL ES.
+        /// </summary>
+        OpenGLES,
+        /// <summary>
+        /// Defrault. Selects the best graphics API available on the current platform.
+        /// </summary>
+        Default,
+    }
 }

@@ -25,7 +25,6 @@ namespace Vessel
 		/// The value is a 32-bit unsigned integer, with R in the least significant octet.
 		/// </summary>
 		/// <param name="packedValue">The packed value.</param>
-		[CLSCompliant(false)]
 		public Color(uint packedValue)
 		{
 			_packedValue = packedValue;
@@ -315,7 +314,6 @@ namespace Vessel
 		/// Gets or sets packed value of this <see cref="Color"/>.
 		/// Expected format is ABGR
 		/// </summary>
-		[CLSCompliant(false)]
 		public UInt32 PackedValue
 		{
 			get { return _packedValue; }
@@ -326,7 +324,6 @@ namespace Vessel
 		/// Gets or sets packed value of this <see cref="Color"/>.
 		/// Expected format is RGBA
 		/// </summary>
-		[CLSCompliant(false)]
 		public UInt32 PackedValueRGBA
 		{
 			get 
@@ -372,6 +369,11 @@ namespace Vessel
 			sb.Append(A);
 			sb.Append("}");
 			return sb.ToString();
+		}
+
+		public Veldrid.RgbaFloat ToVeldrid()
+		{
+			return new Veldrid.RgbaFloat(R / 255f, G / 255f, B / 255f, A / 255f);
 		}
 
 		/// <summary>

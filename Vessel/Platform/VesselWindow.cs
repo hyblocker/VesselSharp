@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Vessel.Native;
+using Veldrid.Sdl2;
+using Veldrid.StartupUtilities;
 
 namespace Vessel
 {
 	public class VesselWindow
 	{
+		public bool Exists => WindowInternal.Exists;
 		public IntPtr Handle => WindowInternal.Handle;
 		public string Name
 		{
@@ -43,8 +45,7 @@ namespace Vessel
 		private int WidthInternal;
 		private int HeightInternal;
 
-		internal Thread ThreadInternal;
-		internal NativeWindow WindowInternal;
+		internal Sdl2Window WindowInternal;
 
 		internal VesselWindow(GraphicsDevice device, string name, int windowWidth, int windowHeight)
 		{
@@ -54,60 +55,22 @@ namespace Vessel
 			HeightInternal = windowHeight;
 			NameInternal = name;
 
-			WindowInternal = new NativeWindow(name, windowWidth, windowHeight);
-			WindowInternal.Show();
-
-
-			Bgfx.SetWindowHandle(WindowInternal.Handle);
-		}
-
-		internal VesselWindow(GraphicsDevice device, IntPtr handle)
-		{
-			WindowInternal = new NativeWindow(handle);
-			Bgfx.SetWindowHandle(handle);
-		}
-
-		internal void Run(Action<VesselWindow> renderThread)
-		{
-			ThreadInternal = new Thread(() => {
-				renderThread(this);
-				WindowInternal.Close();
-			});
-			ThreadInternal.Start();
-
-			// run the native OS message loop on this thread
-			// this blocks until the window closes and the loop exits
-			WindowInternal.RunMessageLoop();
-
-			// wait for the render thread to finish
-			ThreadInternal.Join();
-		}
-
-		internal bool ProcessEvents(ResetFlags resetFlags)
-		{
-			WindowEvent? ev;
-			var reset = false;
-
-			while ((ev = WindowInternal.Poll()) != null)
+			WindowCreateInfo windowCI = new WindowCreateInfo()
 			{
-				var e = ev.Value;
-				switch (e.Type)
-				{
-					case WindowEventType.Exit:
-						return false;
+				X = Sdl2Native.SDL_WINDOWPOS_CENTERED,
+				Y = Sdl2Native.SDL_WINDOWPOS_CENTERED,
+				WindowWidth = windowWidth,
+				WindowHeight = windowHeight,
+				WindowInitialState = Veldrid.WindowState.Normal,
+				WindowTitle = name,
+			};
 
-					case WindowEventType.Size:
-						WidthInternal = e.Width;
-						HeightInternal = e.Height;
-						reset = true;
-						break;
-				}
-			}
+			WindowInternal = VeldridStartup.CreateWindow(ref windowCI);
+		}
 
-			if (reset)
-				Bgfx.Reset(WidthInternal, HeightInternal, resetFlags);
-
-			return true;
+		internal void ProcessEvents()
+		{
+			WindowInternal.PumpEvents();
 		}
 
 		/// <summary>
@@ -116,10 +79,12 @@ namespace Vessel
 		internal void Invalidate()
 		{
 			//Set the window text
-			WindowInternal.SetText(NameInternal);
+			WindowInternal.Title = NameInternal;
 
 			//Sync the window bounds
-
+			
+			WindowInternal.Width = WidthInternal;
+			WindowInternal.Height = HeightInternal;
 		}
 	}
 }

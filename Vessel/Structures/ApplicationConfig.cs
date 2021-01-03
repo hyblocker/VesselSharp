@@ -15,15 +15,6 @@ namespace Vessel
 
 		public GraphicsAPI GraphicsAPI = GraphicsAPI.Default;
 
-		internal Vessel.Native.ResetFlags GetResetFlags()
-		{
-			Vessel.Native.ResetFlags flags = Vessel.Native.ResetFlags.None;
-
-			if (VSync)
-				flags |= Vessel.Native.ResetFlags.Vsync;
-
-			return flags;
-		}
 
 #if DEBUG
 		public bool DebugMode = true;

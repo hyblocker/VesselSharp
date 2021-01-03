@@ -23,9 +23,9 @@ namespace VesselSandbox
 
 		public override void Initialise()
 		{
-
+			base.Initialise();
 		}
-		
+
 		public override void Update()
 		{
 			base.Update();
@@ -34,7 +34,7 @@ namespace VesselSandbox
 		public override void Draw()
 		{
 			base.Draw();
-			GraphicsDevice.Clear(new Color(182, 28, 4, 123));
+			GraphicsDevice.Clear(new Color(255, 255, 0));
 		}
 	}
 }
