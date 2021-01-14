@@ -10,6 +10,11 @@ namespace Vessel
 	public class VesselEngine : IDisposable
 	{
 		/// <summary>
+		/// Whether the engine is in DEBUG Mode
+		/// </summary>
+		public static bool DebugMode { get; private set; }
+
+		/// <summary>
 		/// The window of this engine instance
 		/// </summary>
 		public VesselWindow Window;
@@ -22,20 +27,13 @@ namespace Vessel
 		/// <summary>
 		/// Whether or not Vessel will log events to the logger
 		/// </summary>
-		public bool EnableLogging
-		/*{
-			get
-			{
-				return (Logger != null && typeof(Logger) == Logger.GetType()) ? ((Logger)Logger).DoEngineLogging : false;
-			}
-			set
-			{
-				if (typeof(Logger) == Logger.GetType())
-					((Logger)Logger).DoEngineLogging = value;
-			}
-			
-		}*/
-		;
+		public bool EnableLogging;
+		
+		/// <summary>
+		/// A rendering path to be used by Vessel. To override with your own rendering path override <see cref="Draw"/>.
+		/// </summary>
+		public IRenderPath Renderer;
+
 		public ILogger Logger;
 
 		private ApplicationConfig config;
@@ -43,18 +41,25 @@ namespace Vessel
 		public VesselEngine(ApplicationConfig config)
 		{
 			this.config = config;
+			EnableLogging = DebugMode = config.DebugMode;
+
+			//Initialise the logger
+			Logger = new Logger();
+			new VesselLogger(this);
 		}
 
 		/// <summary>
 		/// Initialises vessel and starts the game loop
 		/// </summary>
-		public void Run()
+		public unsafe void Run()
 		{
-			Initialise();
+			Veldrid.Sdl2.SDL_version version;
+			Veldrid.Sdl2.Sdl2Native.SDL_GetVersion(&version);
+
 			MainLoop();
 		}
 
-		#region Public API
+#region Public API
 
 		/// <summary>
 		/// Called before running any frames, and after the graphics API was setup
@@ -62,7 +67,7 @@ namespace Vessel
 		/// </summary>
 		public virtual void Initialise()
 		{
-			Logger = new Logger();
+
 		}
 		
 		/// <summary>
@@ -79,42 +84,49 @@ namespace Vessel
 		public virtual void Draw()
 		{
 
-
 		}
 
+		/// <summary>
+		/// Called when the game closes, but before disposal of graphics resources.
+		/// Use this to save any data and close active file handles
+		/// </summary>
 		public virtual void Exiting()
 		{
 
 		}
 
-		#endregion
+#endregion
 
-		#region Main Loop
+#region Main Loop
 		/// <summary>
 		/// Setups the engine and initialises the window 
 		/// </summary>
 		internal void MainLoop()
 		{
-			//TODO: LOGGER
-			Logger.Info("Initialising Vessel...");
+			VesselLogger.Logger.Info("Initialising Vessel...");
 
+			//Setup the window
 			VesselWindow window;
 			window = new VesselWindow(GraphicsDevice, config.Name, config.Width, config.Height);
 			Window = window;
 
+			//Initialise the Graphics Device
 			GraphicsDevice.Initialise(window, config);
 			Window.Invalidate();
 
+			//Callback for the engine
 			Initialise();
 
-			Logger.Info($"Started Vessel using {GraphicsDevice.GraphicsAPI}!");
+			VesselLogger.Logger.Info($"Started Vessel using {GraphicsDevice.GraphicsAPI}!");
 
+			//Main Loop
 			while (Window.Exists)
 			{
 				Window.ProcessEvents();
 
 				Update();
 
+				//Only Draw if the window is still open
 				if (Window.Exists)
 				{
 					GraphicsDevice.OnFrameBegin();
@@ -126,19 +138,21 @@ namespace Vessel
 			}
 
 			// Cleanup
-			Logger.Info("Shutting down Vessel...");
+			VesselLogger.Logger.Info("Shutting down Vessel...");
 			Exiting();
-			Dispose();
 		}
 
 		public void Dispose()
 		{
 			// clean up
+			Window.Dispose();
+
 			GraphicsDevice.Dispose();
 			Logger.Close();
+
 		}
 
-		#endregion
+#endregion
 
 	}
 }

@@ -1,7 +1,8 @@
-﻿using System;
+﻿using System.Runtime.Serialization;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.Serialization;
+using System.Numerics;
+using System;
 
 namespace Vessel
 {
@@ -772,8 +773,8 @@ namespace Vessel
 			get
 			{
 				return string.Concat(
-					"Min( ", this.Min.DebugDisplayString, " )  \r\n",
-					"Max( ", this.Max.DebugDisplayString, " )"
+					"Min( ", this.Min.ToString(), " )  \r\n",
+					"Max( ", this.Max.ToString(), " )"
 					);
 			}
 		}

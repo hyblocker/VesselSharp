@@ -9,8 +9,6 @@ namespace Vessel
 {
 	public class Logger : ILogger
 	{
-		public bool DoEngineLogging = true;
-
 		public static Vessel.Logger Log;
 
 		private Serilog.Core.Logger internalLogger;

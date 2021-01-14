@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vessel
 {
-	class Scene
+	public class Scene
 	{
 	}
 }

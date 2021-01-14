@@ -7,6 +7,7 @@ using Veldrid;
 using Veldrid.SPIRV;
 using Veldrid.StartupUtilities;
 using VGDevice = Veldrid.GraphicsDevice;
+using ShaderProgram = Veldrid.Shader;
 
 namespace Vessel
 {
@@ -18,50 +19,44 @@ namespace Vessel
 
 
 		public GraphicsAPI GraphicsAPI = GraphicsAPI.Default;
-		public IntPtr Handle;
+		public GraphicsAPI DefaultGraphicsAPI { get; private set; }
+		public IntPtr Handle { get; private set; }
 		public VesselEngine Engine;
 
-		internal VGDevice veldridGraphicsDevice;
+		public VGDevice veldridGraphicsDevice;
 		internal Pipeline veldridPipeline;
 		internal CommandList veldridCommandList;
+		public GraphicsPipelineDescription pipelineDescription;
+
+		private uint nextBufferSlot = 0;
+		//private IndexBuffer indexBufferCurrent;
+		//private VertexBuffer<T> vertexBufferCurrent;
 
 		public GraphicsDevice(VesselEngine engine)
 		{
 			Engine = engine;
 		}
 
-		//TODO: Remove
-
-		private const string VertexCode = @"
-#version 450
-layout(location = 0) in vec2 Position;
-layout(location = 1) in vec4 Color;
-layout(location = 0) out vec4 fsin_Color;
-void main()
-{
-    gl_Position = vec4(Position, 0, 1);
-    fsin_Color = Color;
-}";
-
-		private const string FragmentCode = @"
-#version 450
-layout(location = 0) in vec4 fsin_Color;
-layout(location = 0) out vec4 fsout_Color;
-void main()
-{
-    fsout_Color = fsin_Color;
-}";
-
-		private Shader[] _shaders;
+		//TODO: make internal, default to an unlit shader that is prepackaged with Vessel
+		public ShaderTechnique shader;
 
 		#region Public API
 		/// <summary>
 		/// Clears the backbuffer to the specified color
 		/// </summary>
-		/// <param name="color"></param>
+		/// <param name="color">The color to clear to</param>
 		public void Clear(Color color)
 		{
 			veldridCommandList.ClearColorTarget(0, color.ToVeldrid());
+		}
+
+		/// <summary>
+		/// Clears the depth buffer to the specified value
+		/// </summary>
+		/// <param name="targetDepth"></param>
+		public void ClearDepthBuffer(float targetDepth = 0f)
+		{
+			veldridCommandList.ClearDepthStencil(targetDepth);
 		}
 
 		/// <summary>
@@ -78,6 +73,44 @@ void main()
 			}
 			return false;
 		}
+
+		/// <summary>
+		/// Returns whether the specified Graphics API is supported
+		/// </summary>
+		/// <param name="api"></param>
+		/// <returns></returns>
+		public static bool IsGraphicsAPISupported(GraphicsAPI api)
+		{
+			if (api == GraphicsAPI.Default)
+				return true;
+			else
+				return VGDevice.IsBackendSupported((GraphicsBackend) api);
+		}
+
+		public void BindBuffer<T> (VertexBuffer<T> vertexBuffer)
+		{
+			//vertexBufferCurrent = vertexBuffer;
+			veldridCommandList.SetVertexBuffer(nextBufferSlot, vertexBuffer._vertexBuffer);
+			nextBufferSlot++;
+		}
+
+		public void BindBuffer(IndexBuffer indexBuffer)
+		{
+			//indexBufferCurrent = indexBuffer;
+			veldridCommandList.SetIndexBuffer(indexBuffer._indexBuffer, indexBuffer._vdFormat);
+		}
+
+		public void DrawIndexed(uint indexCount, uint instanceCount, uint indexStart, int vertexOffset, uint instanceStart)
+		{
+			// Issue a Draw command for a single instance with 4 indices.
+			veldridCommandList.DrawIndexed(indexCount, instanceCount, indexStart, vertexOffset, instanceStart);
+		}
+
+		//public void DrawIndexed(int indexCount, uint instanceCount, uint indexStart, int vertexOffset, uint instanceStart)
+		//{
+			// Issue a Draw command for a single instance with 4 indices.
+			//veldridCommandList.DrawIndexed(Convert.ToUInt32(indexCount), instanceCount, indexStart, vertexOffset, instanceStart);
+		//}
 		#endregion
 
 		#region Internal API
@@ -97,28 +130,24 @@ void main()
 				Debug = config.DebugMode,
 			};
 
+			DefaultGraphicsAPI = (GraphicsAPI) VeldridStartup.GetPlatformDefaultBackend();
+
 			if (config.GraphicsAPI == GraphicsAPI.Default)
-				veldridGraphicsDevice = VeldridStartup.CreateGraphicsDevice(window.WindowInternal, options);
+				veldridGraphicsDevice = VeldridStartup.CreateGraphicsDevice(window.WindowInternal, options, (GraphicsBackend) DefaultGraphicsAPI);
 			else
 				veldridGraphicsDevice = VeldridStartup.CreateGraphicsDevice(window.WindowInternal, options, (GraphicsBackend) config.GraphicsAPI);
 
 			//Create the Graphics Resources
 			ResourceFactory factory = veldridGraphicsDevice.ResourceFactory;
 
-			//Shaders
-			ShaderDescription vertexShaderDesc = new ShaderDescription(
-				ShaderStages.Vertex,
-				Encoding.UTF8.GetBytes(VertexCode),
-				"main");
-			ShaderDescription fragmentShaderDesc = new ShaderDescription(
-				ShaderStages.Fragment,
-				Encoding.UTF8.GetBytes(FragmentCode),
-				"main");
-
-			_shaders = factory.CreateFromSpirv(vertexShaderDesc, fragmentShaderDesc);
+			//TODO: Replace with ResourceFactory.Load("ShaderTest0");
+			shader = new ShaderTechnique(this,
+				System.IO.File.ReadAllBytes(@"E:\Data\Projects\Vessel\VesselSharp\VesselSharp\ShaderTests\ShaderTest0.vert.spv"),
+				System.IO.File.ReadAllBytes(@"E:\Data\Projects\Vessel\VesselSharp\VesselSharp\ShaderTests\ShaderTest0.frag.spv"),
+				"ShaderTest0");
 
 			// Create pipeline
-			GraphicsPipelineDescription pipelineDescription = new GraphicsPipelineDescription();
+			pipelineDescription = new GraphicsPipelineDescription();
 			pipelineDescription.BlendState = BlendStateDescription.SingleOverrideBlend;
 			pipelineDescription.DepthStencilState = new DepthStencilStateDescription(
 				depthTestEnabled: true,
@@ -135,13 +164,25 @@ void main()
 			pipelineDescription.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
 			pipelineDescription.ResourceLayouts = System.Array.Empty<ResourceLayout>();
 			pipelineDescription.ShaderSet = new ShaderSetDescription(
-				vertexLayouts: new VertexLayoutDescription[] { VertexPositionColor.VertexLayout },
-				shaders: _shaders);
+				vertexLayouts: new VertexLayoutDescription[] 
+				{
+					VertexPositionColor.VertexLayout ,
+				},
+				shaders: shader.Programs);
 			pipelineDescription.Outputs = veldridGraphicsDevice.SwapchainFramebuffer.OutputDescription;
 
 			veldridPipeline = factory.CreateGraphicsPipeline(pipelineDescription);
 
 			veldridCommandList = factory.CreateCommandList();
+		}
+
+		internal void RegeneratePipeline()
+		{
+			if (!veldridPipeline.IsDisposed)
+			{
+				veldridPipeline.Dispose();
+			}
+			veldridPipeline = veldridGraphicsDevice.ResourceFactory.CreateGraphicsPipeline(pipelineDescription);
 		}
 
 		/// <summary>
@@ -150,11 +191,9 @@ void main()
 		public void Dispose()
 		{
 			veldridCommandList.Dispose();
+			shader.Dispose();
+
 			veldridGraphicsDevice.Dispose();
-			foreach(var shader in _shaders)
-			{
-				shader.Dispose();
-			}
 		}
 
 		/// <summary>
@@ -188,6 +227,8 @@ void main()
 
 			// Once commands have been submitted, the rendered image can be presented to the application window.
 			veldridGraphicsDevice.SwapBuffers();
+
+			nextBufferSlot = 0;
 		}
 		#endregion
 	}

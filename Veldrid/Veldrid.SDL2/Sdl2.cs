@@ -78,5 +78,29 @@ namespace Veldrid.Sdl2
         private delegate void SDL_free_t(void* ptr);
         private static SDL_free_t s_sdl_free = LoadFunction<SDL_free_t>("SDL_free");
         public static void SDL_free(void* ptr) { s_sdl_free(ptr); }
+
+
+        //   ICONS
+        
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void SDL_SetWindowIcon_t(IntPtr SDL2Window, IntPtr icon);
+        private static SDL_SetWindowIcon_t s_setWindowIcon = LoadFunction<SDL_SetWindowIcon_t>("SDL_SetWindowIcon");
+        public static void SDL_SetWindowIcon(IntPtr Sdl2Window, IntPtr icon) => s_setWindowIcon(Sdl2Window, icon);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate IntPtr SDL_rwfrommem(byte[] mem, int size);
+        private static SDL_rwfrommem s_sdl_rwfrommem = LoadFunction<SDL_rwfrommem>("SDL_RWFromMem");
+        public static IntPtr RwFromMem(byte[] mem, int size) { return s_sdl_rwfrommem(mem, size); }
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate IntPtr SDL_loadbmp_rw(IntPtr src, int freesrc);
+        private static SDL_loadbmp_rw s_sdl_loadbmp_rw = LoadFunction<SDL_loadbmp_rw>("SDL_LoadBMP_RW");
+        public static IntPtr LoadBMP_RW(IntPtr src, int freesrc) { return s_sdl_loadbmp_rw(src, freesrc); }
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate IntPtr SDL_freesurface(IntPtr surface);
+        private static SDL_freesurface s_sdl_freesurface = LoadFunction<SDL_freesurface>("SDL_FreeSurface");
+        public static IntPtr FreeSurface(IntPtr surface) { return s_sdl_freesurface(surface); }
+        
     }
 }

@@ -1,12 +1,13 @@
-﻿using Vessel;
-
-namespace VesselSandbox
+﻿namespace VesselSandbox
 {
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			new SandboxGame().Run();
+			using (var game = new SandboxGame())
+			{
+				game.Run();
+			}
 		}
 	}
 }

@@ -1,6 +1,7 @@
-﻿using System;
+﻿using System.Runtime.Serialization;
 using System.Diagnostics;
-using System.Runtime.Serialization;
+using System.Numerics;
+using System;
 
 namespace Vessel
 {
@@ -90,7 +91,7 @@ namespace Vessel
 			Vector3 ac = c - a;
 
 			Vector3 cross = Vector3.Cross(ab, ac);
-			Vector3.Normalize(ref cross, out Normal);
+			Normal = Vector3.Normalize(cross);
 			D = -(Vector3.Dot(Normal, a));
 		}
 
@@ -211,7 +212,7 @@ namespace Vessel
 		/// <param name="plane">The normalized plane to transform.</param>
 		/// <param name="matrix">The transformation matrix.</param>
 		/// <returns>The transformed plane.</returns>
-		public static Plane Transform(Plane plane, Matrix matrix)
+		public static Plane Transform(Plane plane, Matrix4x4 matrix)
 		{
 			Plane result;
 			Transform(ref plane, ref matrix, out result);
@@ -224,19 +225,18 @@ namespace Vessel
 		/// <param name="plane">The normalized plane to transform.</param>
 		/// <param name="matrix">The transformation matrix.</param>
 		/// <param name="result">The transformed plane.</param>
-		public static void Transform(ref Plane plane, ref Matrix matrix, out Plane result)
+		public static void Transform(ref Plane plane, ref Matrix4x4 matrix, out Plane result)
 		{
 			// See "Transforming Normals" in http://www.glprogramming.com/red/appendixf.html
 			// for an explanation of how this works.
 
-			Matrix transformedMatrix;
-			Matrix.Invert(ref matrix, out transformedMatrix);
-			Matrix.Transpose(ref transformedMatrix, out transformedMatrix);
+			Matrix4x4 transformedMatrix;
+			Matrix4x4.Invert(matrix, out transformedMatrix);
+			transformedMatrix = Matrix4x4.Transpose(transformedMatrix);
 
 			var vector = new Vector4(plane.Normal, plane.D);
 
-			Vector4 transformedVector;
-			Vector4.Transform(ref vector, ref transformedMatrix, out transformedVector);
+			Vector4 transformedVector = Vector4.Transform(vector, transformedMatrix);
 
 			result = new Plane(transformedVector);
 		}
@@ -262,7 +262,7 @@ namespace Vessel
 		/// <param name="result">The transformed plane.</param>
 		public static void Transform(ref Plane plane, ref Quaternion rotation, out Plane result)
 		{
-			Vector3.Transform(ref plane.Normal, ref rotation, out result.Normal);
+			result.Normal = Vector3.Transform(plane.Normal, rotation);
 			result.D = plane.D;
 		}
 
@@ -273,7 +273,7 @@ namespace Vessel
 		{
 			float length = Normal.Length();
 			float factor = 1f / length;
-			Vector3.Multiply(ref Normal, factor, out Normal);
+			Normal = Vector3.Multiply(Normal, factor);
 			D = D * factor;
 		}
 
@@ -298,7 +298,7 @@ namespace Vessel
 		{
 			float length = value.Normal.Length();
 			float factor = 1f / length;
-			Vector3.Multiply(ref value.Normal, factor, out result.Normal);
+			result.Normal = Vector3.Multiply(value.Normal, factor);
 			result.D = value.D * factor;
 		}
 
@@ -439,7 +439,7 @@ namespace Vessel
 			get
 			{
 				return string.Concat(
-					this.Normal.DebugDisplayString, "  ",
+					this.Normal.ToString(), "  ",
 					this.D.ToString()
 					);
 			}

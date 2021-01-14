@@ -31,9 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Veldrid.Utilities", "Veldri
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Veldrid.VirtualReality", "Veldrid\Veldrid.VirtualReality\Veldrid.VirtualReality.csproj", "{C660A46C-4A02-4391-854B-8C4BBE6BAA8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VesselSandbox", "VesselSandbox\VesselSandbox.csproj", "{411B7744-014A-460D-BE77-DEB16C89DD3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VesselSandbox", "VesselSandbox\VesselSandbox.csproj", "{411B7744-014A-460D-BE77-DEB16C89DD3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vessel", "Vessel\Vessel.csproj", "{970F562F-9442-4499-86B2-CF2900F5FF41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vessel", "Vessel\Vessel.csproj", "{970F562F-9442-4499-86B2-CF2900F5FF41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -10,7 +10,12 @@
 		<Copyright>Copyright © Hyblocker 2021 All rights reserved.</Copyright>
 		<Description>Vessel is a game development Framework designed to make the development of real-time graphics applications easy</Description>
 	</PropertyGroup>
-	
+
+	<ItemGroup>
+	  <None Remove="Structures\VertexTypes\Vertex.cs~RF6d96d9a0.TMP" />
+	  <None Remove="Vessel.bmp" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<Content Include="$(MSBuildThisFileDirectory)..\Veldrid\Veldrid.SDL2\native\win-x64\SDL2.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -21,9 +26,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Vessel.bmp" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Serilog" Version="2.10.0" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
 		<PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+		<PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
 		<PackageReference Include="Veldrid.SPIRV" Version="1.0.13" />
 		<ProjectReference Include="..\Veldrid\Veldrid.RenderDoc\Veldrid.RenderDoc.csproj">
 		  <Private>true</Private>
@@ -46,6 +56,14 @@
 		<ProjectReference Include="..\Veldrid\Veldrid.ImGui\Veldrid.ImGui.csproj">
 		  <Private>true</Private>
 		</ProjectReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Vessel.bmp" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Components\" />
 	</ItemGroup>
 
 </Project>
