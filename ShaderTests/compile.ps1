@@ -8,3 +8,5 @@ foreach ($file in $fileNames)
         glslangvalidator -V $file -o $file".spv"
     }
 }
+Write-Host "Compile Done!"
+Pause

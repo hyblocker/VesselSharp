@@ -11,59 +11,46 @@
 		<Description>Vessel is a game development Framework designed to make the development of real-time graphics applications easy</Description>
 	</PropertyGroup>
 
+	<!-- ACTUAL FUCKING BLACK MAGIC THAT MAKES VESSEL A SINGLE DLL WTF -->
+	<PropertyGroup>
+		<PublishTrimmed>true</PublishTrimmed>
+		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+		<PublishSingleFile>true</PublishSingleFile>
+	</PropertyGroup>
+
 	<ItemGroup>
-	  <None Remove="Structures\VertexTypes\Vertex.cs~RF6d96d9a0.TMP" />
-	  <None Remove="Vessel.bmp" />
+		<!-- Default Icon -->
+		<None Remove="Vessel.bmp" />
+		<EmbeddedResource Include="Vessel.bmp" />
+		
+		<!-- Other shit -->
+		<Folder Include="Input\" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="$(MSBuildThisFileDirectory)..\Veldrid\Veldrid.SDL2\native\win-x64\SDL2.dll">
+		<None Include="$(MSBuildThisFileDirectory)..\Veldrid\Veldrid.SDL2\native\win-x64\SDL2.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
+		</None>
 		<Content Include="$(MSBuildThisFileDirectory)..\Veldrid\Veldrid.SDL2\native\osx-x64\libsdl2.dylib">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
-
+	
 	<ItemGroup>
-	  <EmbeddedResource Include="Vessel.bmp" />
-	</ItemGroup>
-
-	<ItemGroup>
+		<PackageReference Include="ImGui.NET" Version="1.78.0" />
 		<PackageReference Include="Serilog" Version="2.10.0" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
 		<PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
 		<PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
-		<PackageReference Include="Veldrid.SPIRV" Version="1.0.13" />
-		<ProjectReference Include="..\Veldrid\Veldrid.RenderDoc\Veldrid.RenderDoc.csproj">
-		  <Private>true</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\Veldrid\Veldrid\Veldrid.csproj">
-		  <Private>true</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\Veldrid\Veldrid.SDL2\Veldrid.SDL2.csproj">
-		  <Private>true</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\Veldrid\Veldrid.StartupUtilities\Veldrid.StartupUtilities.csproj">
-		  <Private>true</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\Veldrid\Veldrid.ImageSharp\Veldrid.ImageSharp.csproj">
-		  <Private>true</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\Veldrid\Veldrid.Utilities\Veldrid.Utilities.csproj">
-		  <Private>true</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\Veldrid\Veldrid.ImGui\Veldrid.ImGui.csproj">
-		  <Private>true</Private>
-		</ProjectReference>
+		<PackageReference Include="Veldrid" Version="4.8.0" />
+		<PackageReference Include="Veldrid.ImageSharp" Version="4.8.0" />
+		<PackageReference Include="Veldrid.ImGui" Version="5.72.0" />
+		<PackageReference Include="Veldrid.MetalBindings" Version="4.8.0" />
+		<PackageReference Include="Veldrid.OpenGLBindings" Version="4.8.0" />
+		<PackageReference Include="Veldrid.RenderDoc" Version="1.0.1" />
+		<PackageReference Include="Veldrid.SDL2" Version="4.8.0" />
+		<PackageReference Include="Veldrid.SPIRV" Version="1.0.14" />
+		<PackageReference Include="Veldrid.StartupUtilities" Version="4.8.0" />
+		<PackageReference Include="Veldrid.Utilities" Version="4.8.0" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Resource Include="Vessel.bmp" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Components\" />
-	</ItemGroup>
-
 </Project>

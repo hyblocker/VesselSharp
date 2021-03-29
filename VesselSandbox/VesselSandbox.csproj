@@ -7,10 +7,10 @@
 		<Platforms>AnyCPU;x64;x86</Platforms>
 	</PropertyGroup>
 
-	<ItemGroup>
-	  <None Remove="Icon.bmp" />
-	  <None Remove="Program.cs~RF70d45874.TMP" />
-	</ItemGroup>
+	<!-- ACTUAL FUCKING BLACK MAGIC JFC -->
+	<PropertyGroup>
+		<PublishTrimmed>true</PublishTrimmed>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<Content Include="$(MSBuildThisFileDirectory)..\Veldrid\Veldrid.SDL2\native\win-x64\SDL2.dll">
@@ -22,35 +22,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Icon.bmp" />
+		<EmbeddedResource Include="Icon.bmp" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Veldrid.SPIRV" Version="1.0.13" />
-		<ProjectReference Include="..\Veldrid\Veldrid.RenderDoc\Veldrid.RenderDoc.csproj">
-		  <Private>true</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\Veldrid\Veldrid\Veldrid.csproj">
-		  <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
-		</ProjectReference>
-		<ProjectReference Include="..\Veldrid\Veldrid.SDL2\Veldrid.SDL2.csproj">
-		  <Private>true</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\Veldrid\Veldrid.StartupUtilities\Veldrid.StartupUtilities.csproj">
-		  <Private>true</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\Veldrid\Veldrid.ImageSharp\Veldrid.ImageSharp.csproj">
-		  <Private>true</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\Veldrid\Veldrid.Utilities\Veldrid.Utilities.csproj">
-		  <Private>true</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\Veldrid\Veldrid.ImGui\Veldrid.ImGui.csproj">
-		  <Private>true</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\Vessel\Vessel.csproj">
-		  <Private>true</Private>
-		</ProjectReference>
+		<ProjectReference Include="..\Vessel\Vessel.csproj" />
 	</ItemGroup>
 
 

@@ -28,12 +28,15 @@ namespace Vessel
 		internal CommandList veldridCommandList;
 		public GraphicsPipelineDescription pipelineDescription;
 
+		public DebugGraphicsDevice Debug;
+
 		private uint nextBufferSlot = 0;
 		//private IndexBuffer indexBufferCurrent;
 		//private VertexBuffer<T> vertexBufferCurrent;
 
 		public GraphicsDevice(VesselEngine engine)
 		{
+			Debug = new DebugGraphicsDevice(this);
 			Engine = engine;
 		}
 
@@ -87,6 +90,11 @@ namespace Vessel
 				return VGDevice.IsBackendSupported((GraphicsBackend) api);
 		}
 
+		/// <summary>
+		/// Binds the vertex buffer to the GPU
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="vertexBuffer"></param>
 		public void BindBuffer<T> (VertexBuffer<T> vertexBuffer)
 		{
 			//vertexBufferCurrent = vertexBuffer;
@@ -94,6 +102,10 @@ namespace Vessel
 			nextBufferSlot++;
 		}
 
+		/// <summary>
+		/// Binds the index buffer to the GPU
+		/// </summary>
+		/// <param name="indexBuffer"></param>
 		public void BindBuffer(IndexBuffer indexBuffer)
 		{
 			//indexBufferCurrent = indexBuffer;
@@ -146,6 +158,10 @@ namespace Vessel
 				System.IO.File.ReadAllBytes(@"E:\Data\Projects\Vessel\VesselSharp\VesselSharp\ShaderTests\ShaderTest0.frag.spv"),
 				"ShaderTest0");
 
+			// TODO: Move pipeline to Shader class
+			// TODO: Shader => ShaderTechnique; ComputeShader
+			// TODO: Assets can be compiled (i.e. banks) or directories (i.e. folder of compiled assets (eg shader.shd), assets aren't packaged into an archive though) - for use during dev cuz packaging archives will probably be time consuming as fuck and decimate workflows
+
 			// Create pipeline
 			pipelineDescription = new GraphicsPipelineDescription();
 			pipelineDescription.BlendState = BlendStateDescription.SingleOverrideBlend;
@@ -164,9 +180,9 @@ namespace Vessel
 			pipelineDescription.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
 			pipelineDescription.ResourceLayouts = System.Array.Empty<ResourceLayout>();
 			pipelineDescription.ShaderSet = new ShaderSetDescription(
-				vertexLayouts: new VertexLayoutDescription[] 
+				vertexLayouts: new VertexLayoutDescription[]
 				{
-					VertexPositionColor.VertexLayout ,
+					VertexPositionColor.VertexLayout,
 				},
 				shaders: shader.Programs);
 			pipelineDescription.Outputs = veldridGraphicsDevice.SwapchainFramebuffer.OutputDescription;
@@ -199,8 +215,6 @@ namespace Vessel
 		/// <summary>
 		/// Binds a viewport to window framebuffer
 		/// </summary>
-		/// <param name="v"></param>
-		/// <param name="rectangle"></param>
 		internal void BindToWindowBuffer()
 		{
 			veldridCommandList.SetFramebuffer(veldridGraphicsDevice.SwapchainFramebuffer);

@@ -1,4 +1,4 @@
-﻿namespace Vessel
+﻿namespace Vessel.Graphics
 {
 	/// <summary>
 	/// Represents a render path

@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Vessel
+﻿namespace Vessel
 {
+	// TODO: struct
 	public class ApplicationConfig
 	{
 		public string Name = "Vessel Engine";
 		public int Width = 1280;
 		public int Height = 720;
 		public bool VSync = true;
+		public bool Fullscreen = false;
+		/// <summary>
+		/// Whether to use RenderDoc or not
+		/// </summary>
+		public bool RenderDoc = false;
 
 		public GraphicsAPI GraphicsAPI = GraphicsAPI.Default;
 

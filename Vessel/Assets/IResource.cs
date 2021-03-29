@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Vessel.Assets
 {
+	/// <summary>
+	/// A generic resource that Vessel can load
+	/// </summary>
 	public interface IResource : IDisposable
 	{
 		string AssetPath { get; }
@@ -13,5 +16,5 @@ namespace Vessel.Assets
 		/// Unloads the resource
 		/// </summary>
 		void Unload();
-}
+	}
 }

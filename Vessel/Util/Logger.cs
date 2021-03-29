@@ -9,7 +9,7 @@ namespace Vessel
 {
 	public class Logger : ILogger
 	{
-		public static Vessel.Logger Log;
+		public static Vessel.Logger Log { get; private set; }
 
 		private Serilog.Core.Logger internalLogger;
 
@@ -23,6 +23,11 @@ namespace Vessel
 				.CreateLogger();
 
 			Serilog.Log.Logger = internalLogger;
+
+			if (Log == null)
+			{
+				Log = this;
+			}
 		}
 
 		public void Close()
