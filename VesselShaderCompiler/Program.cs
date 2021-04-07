@@ -1,5 +1,6 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace VesselShaderCompiler
@@ -20,17 +21,33 @@ namespace VesselShaderCompiler
 		[Option("--output-path", "The directory where compiled files are placed.", CommandOptionType.SingleValue)]
 		public string OutputPath { get; }
 
-		[Option("--set", "The path to the JSON file containing shader variant definitions to compile.", CommandOptionType.SingleValue)]
-		public string SetDefinitionPath { get; }
+		[Option("--debug")]
+		public bool Debug { get; } = true;
 
 		public void OnExecute()
 		{
+			VesselShaderUtil.debugMode = Debug;
+
 			// TODO: Compile shaders or something idfk
 			if (!Directory.Exists(OutputPath))
 			{
 				Directory.CreateDirectory(OutputPath);
 			}
 
+			// Get the shader descriptions using smart ass reflection
+			VesselShaderDescription[] descs = VesselShaderUtil.GetShaderList(SearchPaths);
+
+			HashSet<string> generatedPaths = new HashSet<string>();
+
+			VesselShaderCompiler compiler = new VesselShaderCompiler(descs, OutputPath);
+			foreach (VesselShaderDescription desc in descs)
+			{
+				string[] newPaths = compiler.Compile(desc);
+				foreach (string s in newPaths)
+				{
+					generatedPaths.Add(s);
+				}
+			}
 
 		}
 	}

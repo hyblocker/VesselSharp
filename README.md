@@ -2,6 +2,10 @@
 
 Vessel Framework is a Modern Cross-Platform Framework used to develop real-time interactive applications. It supports all modern Graphics APIs and offers a lot of flexibility in how it is structured
 
+### Progress
+
+Currently Vessel is capable of loading shaders, and determining the locations of buffers. SPIRV-Reflect is currently being bound to C# to allow for better a better and more user-friendly shader API.
+
 ## What is Vessel
 Vessel is a hobby project I'm working on as a current iteration of my game engine. The extremely ambitious and likely unobtainable goals which are planned for the future include a fully featured 3D render pipeline which is to include default shaders which are based on [Disney BRDF](https://blog.selfshadow.com/publications/s2012-shading-course/burley/s2012_pbs_disney_brdf_notes_v3.pdf), being heavily based on [Epic's implementation](https://de45xmedrsdbp.cloudfront.net/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf) and [Frostbite's implementation](https://seblagarde.files.wordpress.com/2015/07/course_notes_moving_frostbite_to_pbr_v32.pdf), along with interactive 3D physics and high performance without sacrificing visual quality.
 Vessel exposes a unified API agnostic abstraction for interfacing with platform specific libraries used in the development of real-time interactive applications such as videogames.

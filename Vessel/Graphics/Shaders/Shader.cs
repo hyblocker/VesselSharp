@@ -15,6 +15,9 @@ namespace Vessel
 
 	public class Shader : ShaderBase
 	{
+		private SpirvReflection refl;
+		private DeviceBuffer buffer;
+
 		public Shader(GraphicsDevice graphicsDevice, string path) : base(graphicsDevice)
 		{
 			// TODO: Load from file
@@ -24,42 +27,32 @@ namespace Vessel
 			// Initialise pipeline
 			pipelineDescription = new GraphicsPipelineDescription();
 
-			// TODO: Combine shaders into a single binary object, one where both the reflection data, and shader code are provided
-			byte[] vert = AssetManager.FetchAssetBytes($"{path}.vert.spv");
-			byte[] frag = AssetManager.FetchAssetBytes($"{path}.frag.spv");
+			byte[] shaderBytes = AssetManager.FetchAssetBytes($"{path}.shdr");
+
+			VesselShaderReader.BlobToShader(shaderBytes, out refl, out byte[][] data);
+
+			// TODO: Blob to shader needs work, the method should also output a ShaderStages[] for the stages
 
 			//Loads a SPIR-V binary from the byte[], and attempts to use SPIR-V cross to cross compile it for other platforms if the current platform isn't Vulkan
 			Programs = graphicsDevice.veldridGraphicsDevice.ResourceFactory.CreateFromSpirv(
-				new ShaderDescription(ShaderStages.Vertex, vert, "main", VesselEngine.DebugMode),
-				new ShaderDescription(ShaderStages.Fragment, frag, "main", VesselEngine.DebugMode));
+				new ShaderDescription(ShaderStages.Vertex, data[0], "main", VesselEngine.DebugMode),
+				new ShaderDescription(ShaderStages.Fragment, data[1], "main", VesselEngine.DebugMode));
 
-			CreatePipelineDescription();
+			InitPipeline();
 			CrossCompileShader();
-
-			shaderPipeline = veldridGraphicsDevice.ResourceFactory.CreateGraphicsPipeline(pipelineDescription);
 		}
 
 		public override void Apply()
 		{
-			//TODO: Pipeline is constructed with the shader technique
-			//TODO: Set pipeline from shader
-
-			pipelineDescription.ShaderSet = new ShaderSetDescription(
-				vertexLayouts: new VertexLayoutDescription[]
-				{
-					// TODO: GET FROM SPIRV JFC
-					VertexPositionColor.VertexLayout,
-				},
-				shaders: Programs);
-
-			//TODO: Check if the pipeline needs to be invalidated
-			if (!shaderPipeline.IsDisposed)
+			if (isDirty)
 			{
-				shaderPipeline.Dispose();
+				if (shaderPipeline != null && !shaderPipeline.IsDisposed)
+				{
+					shaderPipeline.Dispose();
+				}
+				shaderPipeline = veldridGraphicsDevice.ResourceFactory.CreateGraphicsPipeline(pipelineDescription);
 			}
-			shaderPipeline = veldridGraphicsDevice.ResourceFactory.CreateGraphicsPipeline(pipelineDescription);
 
-			//TODO: Apply shader to pipeline and regenerate or pull from cache
 			GraphicsDevice.veldridCommandList.SetPipeline(shaderPipeline);
 		}
 
@@ -79,10 +72,12 @@ namespace Vessel
 		}
 
 		/// <summary>
-		/// Generates the pipeline description
+		/// Initializes the pipeline
 		/// </summary>
-		private void CreatePipelineDescription()
+		private void InitPipeline()
 		{
+			var factory = GraphicsDevice.veldridGraphicsDevice.ResourceFactory;
+
 			// TODO: Properties to play with all these values
 			pipelineDescription.BlendState = BlendStateDescription.SingleOverrideBlend;
 			pipelineDescription.DepthStencilState = new DepthStencilStateDescription(
@@ -98,14 +93,26 @@ namespace Vessel
 				scissorTestEnabled: false);
 
 			pipelineDescription.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-			pipelineDescription.ResourceLayouts = System.Array.Empty<ResourceLayout>();
+			//pipelineDescription.ResourceLayouts = Array.Empty<ResourceLayout>();
+
+			// Create the resource layouts from the shader descriptions
+			ResourceLayout[] resourceLayouts = new ResourceLayout[refl.ResourceLayouts.Length];
+			for (int i = 0; i < resourceLayouts.Length; i++)
+			{
+				resourceLayouts[0] = factory.CreateResourceLayout(refl.ResourceLayouts[i]);
+			}
+			pipelineDescription.ResourceLayouts = resourceLayouts;
+
 			pipelineDescription.ShaderSet = new ShaderSetDescription(
-				vertexLayouts: new VertexLayoutDescription[]
-				{
-					// TODO: Load from SPIR-V reflection metadata
-					VertexPositionColor.VertexLayout,
-				},
+				vertexLayouts:
+					new[] {
+						new VertexLayoutDescription(refl.VertexElements)
+					},
 				shaders: Programs);
+
+			//factory.CreateResourceSet(new ResourceSetDescription(,))
+
+			System.Diagnostics.Debugger.Break();
 
 			// TODO: GraphicsDevice.FrameBuffer.InternalFramebuffer.OutputDescription => gets the output description of the currently bound framebuffer
 			pipelineDescription.Outputs = veldridGraphicsDevice.SwapchainFramebuffer.OutputDescription;

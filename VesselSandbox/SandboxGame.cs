@@ -45,6 +45,7 @@ namespace VesselSandbox
 
 			// Load the shaders from disk
 			Shader = new Shader(GraphicsDevice, "ShaderTest0");
+			var cubeShader = new Shader(GraphicsDevice, "Cube");
 
 			// Define the model's vertices and indices
 			VertexPositionColor[] quadVertices =

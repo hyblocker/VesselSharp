@@ -153,16 +153,17 @@ namespace Vessel
 			ResourceFactory factory = veldridGraphicsDevice.ResourceFactory;
 
 			//TODO: Replace with ResourceFactory.Load("ShaderTest0");
-			shader = new ShaderTechnique(this,
-				System.IO.File.ReadAllBytes(@"E:\Data\Projects\Vessel\VesselSharp\VesselSharp\ShaderTests\ShaderTest0.vert.spv"),
-				System.IO.File.ReadAllBytes(@"E:\Data\Projects\Vessel\VesselSharp\VesselSharp\ShaderTests\ShaderTest0.frag.spv"),
-				"ShaderTest0");
+			//shader = new ShaderTechnique(this,
+				//System.IO.File.ReadAllBytes(@"E:\Data\Projects\Vessel\VesselSharp\VesselSharp\ShaderTests\ShaderTest0.vert.spv"),
+				//System.IO.File.ReadAllBytes(@"E:\Data\Projects\Vessel\VesselSharp\VesselSharp\ShaderTests\ShaderTest0.frag.spv"),
+				//"ShaderTest0");
 
 			// TODO: Move pipeline to Shader class
 			// TODO: Shader => ShaderTechnique; ComputeShader
 			// TODO: Assets can be compiled (i.e. banks) or directories (i.e. folder of compiled assets (eg shader.shd), assets aren't packaged into an archive though) - for use during dev cuz packaging archives will probably be time consuming as fuck and decimate workflows
 
 			// Create pipeline
+			/*
 			pipelineDescription = new GraphicsPipelineDescription();
 			pipelineDescription.BlendState = BlendStateDescription.SingleOverrideBlend;
 			pipelineDescription.DepthStencilState = new DepthStencilStateDescription(
@@ -188,6 +189,7 @@ namespace Vessel
 			pipelineDescription.Outputs = veldridGraphicsDevice.SwapchainFramebuffer.OutputDescription;
 
 			veldridPipeline = factory.CreateGraphicsPipeline(pipelineDescription);
+			*/
 
 			veldridCommandList = factory.CreateCommandList();
 		}
