@@ -2,9 +2,6 @@
 
 namespace Vessel
 {
-	/// <summary>
-	/// An immediate mode GUI class.
-	/// </summary>;
 	public static partial class Gui
 	{
 		public static void Indent(float indent_w)

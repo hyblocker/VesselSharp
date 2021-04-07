@@ -16,6 +16,10 @@
 		<PublishTrimmed>true</PublishTrimmed>
 		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
 		<PublishSingleFile>true</PublishSingleFile>
+		<Nullable></Nullable>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+	  <DocumentationFile>E:\Data\Projects\Vessel\VesselSharp\VesselSharp\Vessel\Vessel.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -28,10 +32,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="$(MSBuildThisFileDirectory)..\Veldrid\Veldrid.SDL2\native\win-x64\SDL2.dll">
+		<None Include="$(MSBuildThisFileDirectory)..\Veldrid\src\Veldrid.SDL2\native\win-x64\SDL2.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<Content Include="$(MSBuildThisFileDirectory)..\Veldrid\Veldrid.SDL2\native\osx-x64\libsdl2.dylib">
+		<Content Include="$(MSBuildThisFileDirectory)..\Veldrid\src\Veldrid.SDL2\native\osx-x64\libsdl2.dylib">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>

@@ -1,0 +1,3512 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Vessel</name>
+    </assembly>
+    <members>
+        <member name="T:Vessel.AssetBank">
+            <summary>
+            A Vessel archive file that contains multiple assets
+            </summary>
+        </member>
+        <member name="T:Vessel.Assets.AssetManager">
+            <summary>
+            This class managers fetching and caching of assets, along with asset unloading
+            </summary>
+        </member>
+        <member name="P:Vessel.Assets.AssetManager.AssetPath">
+            <summary>
+            The base path for all assets
+            </summary>
+        </member>
+        <member name="M:Vessel.Assets.AssetManager.Initialise">
+            <summary>
+            Initialises the <see cref="T:Vessel.Assets.AssetManager"/>, using the <c>Assets</c> directory as the root directory
+            </summary>
+        </member>
+        <member name="M:Vessel.Assets.AssetManager.Initialise(System.String)">
+            <summary>
+            Initialises the <see cref="T:Vessel.Assets.AssetManager"/>, using the <paramref name="path"/> value as the root directory
+            </summary>
+            <param name="path">The root directory as an absolute path</param>
+        </member>
+        <member name="M:Vessel.Assets.AssetManager.FetchAssetBytes(System.String)">
+            <summary>
+            Loads an the specified asset into a byte[]
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Vessel.Assets.IResource">
+            <summary>
+            A generic resource that Vessel can load
+            </summary>
+        </member>
+        <member name="M:Vessel.Assets.IResource.Unload">
+            <summary>
+            Unloads the resource
+            </summary>
+        </member>
+        <member name="T:Vessel.Assets.ResourceCache">
+            <summary>
+            A <see cref="T:Vessel.Assets.IResource"/> cache, which contains a cached list of resources previously loaded by Vessel.
+            <para></para>
+            Vessel will manage unloading of resource during stress automagically.
+            </summary>
+        </member>
+        <member name="T:Vessel.VesselShaderReader">
+            <summary>
+            Helper class to read a <see cref="T:Vessel.Shader"/> from a binary blob
+            </summary>
+        </member>
+        <member name="T:Vessel.Camera">
+            <summary>
+            A camera component. This component is what is used to project the world to the target framebuffer.
+            This camera component essentially holds a projection matrix and view matrix, along with the frame buffer its attached to.
+            For components like post processing, those hook via render order, using something like: 
+            <code>
+            
+            </code>
+            </summary>
+        </member>
+        <member name="M:Vessel.Camera.Dispose">
+            <summary>
+            Clear buffers
+            </summary>
+        </member>
+        <member name="F:Vessel.Component.Parent">
+            <summary>
+            The entity this component belongs to
+            </summary>
+        </member>
+        <member name="F:Vessel.Component.Active">
+            <summary>
+            Whether the component is active or not
+            </summary>
+        </member>
+        <member name="M:Vessel.Component.Init">
+            <summary>
+            Called when the component is added to an entity and the entity this component is attached to is added to the scene
+            </summary>
+        </member>
+        <member name="M:Vessel.Component.Update">
+            <summary>
+            Called every frame before rendering
+            </summary>
+        </member>
+        <member name="M:Vessel.Component.PostDraw">
+            <summary>
+            Called after rendering
+            </summary>
+        </member>
+        <member name="M:Vessel.Component.Dispose">
+            <summary>
+            Called upon destroying
+            </summary>
+        </member>
+        <member name="T:Vessel.Entity">
+            <summary>
+            An entity.
+            </summary>
+        </member>
+        <member name="F:Vessel.Entity.Name">
+            <summary>
+            The name of this entity
+            </summary>
+        </member>
+        <member name="F:Vessel.Entity.Active">
+            <summary>
+            Whether the entity and all of its components are active or not
+            </summary>
+        </member>
+        <member name="F:Vessel.Entity.Scene">
+            <summary>
+            The scene to which this entity is registered to
+            </summary>
+        </member>
+        <member name="M:Vessel.Entity.#ctor">
+            <summary>
+            Creates an entity
+            </summary>
+        </member>
+        <member name="M:Vessel.Entity.GetComponent``1">
+            <summary>
+            Returns the first <see cref="T:Vessel.Component"/> of the specified type if its attached to this <see cref="T:Vessel.Entity"/>.
+            Returns null if it doesn't exist
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Vessel.Entity.AddComponent(Vessel.Component)">
+            <summary>
+            Attaches a component to this <see cref="T:Vessel.Entity"/>
+            </summary>
+            <param name="component"></param>
+        </member>
+        <member name="T:Vessel.Scene">
+            <summary>
+            A hierarchy that contains all entites in a scene
+            </summary>
+        </member>
+        <member name="M:Vessel.Scene.Initialise">
+            <summary>
+            Called when the scene is loaded
+            </summary>
+        </member>
+        <member name="M:Vessel.Scene.End">
+            <summary>
+            Called when the scene is unloaded
+            </summary>
+        </member>
+        <member name="P:Vessel.VesselEngine.Instance">
+            <summary>
+            The singleton instance of the first <see cref="T:Vessel.VesselEngine"/> created
+            </summary>
+        </member>
+        <member name="P:Vessel.VesselEngine.DebugMode">
+            <summary>
+            Whether the engine is in DEBUG Mode
+            </summary>
+        </member>
+        <member name="F:Vessel.VesselEngine.Window">
+            <summary>
+            The window of this engine instance
+            </summary>
+        </member>
+        <member name="F:Vessel.VesselEngine.GraphicsDevice">
+            <summary>
+            The graphics device responsible for driving this instance of the engine
+            </summary>
+        </member>
+        <member name="F:Vessel.VesselEngine.EnableLogging">
+            <summary>
+            Whether or not Vessel will log events to the logger
+            </summary>
+        </member>
+        <member name="F:Vessel.VesselEngine.Renderer">
+            <summary>
+            A rendering path to be used by Vessel. To override with your own rendering path override <see cref="M:Vessel.VesselEngine.Draw"/>.
+            </summary>
+        </member>
+        <member name="F:Vessel.VesselEngine.RenderLayers">
+            <summary>
+            The group of <see cref="T:Vessel.Graphics.RenderLayer"/>s the engine will render after Rendering the entire <see cref="P:Vessel.VesselEngine.Scene"/>
+            </summary>
+        </member>
+        <member name="F:Vessel.VesselEngine.Logger">
+            <summary>
+            The logger that Vessel will use to log events to.
+            </summary>
+        </member>
+        <member name="F:Vessel.VesselEngine.TargetFrameTime">
+            <summary>
+            The target time in seconds between one frame and another
+            </summary>
+        </member>
+        <member name="F:Vessel.VesselEngine.LimitFrameRate">
+            <summary>
+            Whether or not to lock the framerate to <see cref="F:Vessel.VesselEngine.TargetFrameTime"/>
+            </summary>
+        </member>
+        <member name="P:Vessel.VesselEngine.DeltaTime">
+            <summary>
+            The time elapsed since the last frame, in seconds
+            </summary>
+        </member>
+        <member name="P:Vessel.VesselEngine.Scene">
+            <summary>
+            The currently loaded scene
+            </summary>
+        </member>
+        <member name="M:Vessel.VesselEngine.Run">
+            <summary>
+            Initialises Vessel and starts the game loop
+            </summary>
+        </member>
+        <member name="M:Vessel.VesselEngine.Initialise">
+            <summary>
+            Called before running any frames, and after the graphics API was setup
+            Use this method to load data and initialise your game
+            </summary>
+        </member>
+        <member name="M:Vessel.VesselEngine.Update">
+            <summary>
+            Called every frame. Used to process the game logic before drawing
+            </summary>
+        </member>
+        <member name="M:Vessel.VesselEngine.Draw">
+            <summary>
+            Called every frame. Used to push draw calls to the screen
+            </summary>
+        </member>
+        <member name="M:Vessel.VesselEngine.Exiting">
+            <summary>
+            Called when the game closes, but before disposal of graphics resources.
+            Use this to save any data and close active file handles
+            </summary>
+        </member>
+        <member name="M:Vessel.VesselEngine.MainLoop">
+            <summary>
+            Setups the engine and initialises the window 
+            </summary>
+        </member>
+        <member name="T:Vessel.DebugGraphicsDevice">
+            <summary>
+            A graphics device that is used to call debug commands
+            </summary>
+        </member>
+        <member name="M:Vessel.DebugGraphicsDevice.PushGroup(System.String)">
+            <summary>
+            Create a new debug group for use in frame debuggers such as RenderDoc
+            </summary>
+            <param name="name">The name of the debug group</param>
+        </member>
+        <member name="M:Vessel.DebugGraphicsDevice.PopGroup">
+            <summary>
+            Exit the current debug group
+            </summary>
+        </member>
+        <member name="M:Vessel.DebugGraphicsDevice.Marker(System.String)">
+            <summary>
+            Inserts a debug marker for use in frame debuggers such as RenderDoc
+            </summary>
+            <param name="name">The name of the marker</param>
+        </member>
+        <member name="T:Vessel.Debug.RenderDoc">
+            <summary>
+            A class for interacting with the RenderDoc API
+            <para></para>
+            Note: Does not compile under Release if not using the <c>RENDERDOC_ENABLED</c> preprocessor directive
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.IsLoaded">
+            <summary>
+            Whether we can interface with RenderDoc
+            </summary>
+        </member>
+        <member name="M:Vessel.Debug.RenderDoc.Initialise">
+            <summary>
+            Initialises the RenderDoc API
+            </summary>
+            <returns>Whether RenderDoc initialised successfully</returns>
+        </member>
+        <member name="M:Vessel.Debug.RenderDoc.Initialise(System.String)">
+            <summary>
+            Initialises the RenderDoc API
+            </summary>
+            <param name="path">The path to the RenderDoc shared library (<c>renderdoc.dll / librenderdoc.dylib / librenderdoc.so</c>)</param>
+            <returns>Whether RenderDoc initialised successfully</returns>
+        </member>
+        <member name="M:Vessel.Debug.RenderDoc.LaunchReplayUI">
+            <summary>
+            Starts the replay UI
+            </summary>
+        </member>
+        <member name="M:Vessel.Debug.RenderDoc.LaunchReplayUI(System.String)">
+            <summary>
+            Starts the replay UI
+            </summary>
+            <param name="args">The arguments to launch the replay UI with</param>
+        </member>
+        <member name="M:Vessel.Debug.RenderDoc.EndFrameCapture">
+            <summary>
+            Stop capturing the current frame
+            </summary>
+            <returns>Whether the operation was successful or not</returns>
+        </member>
+        <member name="M:Vessel.Debug.RenderDoc.IsFrameCapturing">
+            <summary>
+            Whether the current frame is being captured
+            </summary>
+        </member>
+        <member name="M:Vessel.Debug.RenderDoc.IsTargetControlConnected">
+            <summary>
+            Whether the target control is connected
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Vessel.Debug.RenderDoc.SetCaptureSavePath(System.String)">
+            <summary>
+            Sets the directory in which RenderDoc will save captures to
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:Vessel.Debug.RenderDoc.StartFrameCapture">
+            <summary>
+            Start capturing the current frame
+            </summary>
+        </member>
+        <member name="M:Vessel.Debug.RenderDoc.TriggerCapture(System.UInt32)">
+            <summary>
+            Captures the specified amount of frames
+            </summary>
+            <param name="numFrames">How many frames to capture</param>
+        </member>
+        <member name="M:Vessel.Debug.RenderDoc.TriggerCapture">
+            <summary>
+            Captures a single frame
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.APIValidation">
+            <summary>
+            Whether RenderDoc will validate API uUsage
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.OverlayFrameRate">
+            <summary>
+            Whether RenderDoc will overlay the framerate
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.OverlayEnabled">
+            <summary>
+            Whether the RenderDoc overlay is enabled or not
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.CaptureCount">
+            <summary>
+            The amount of captures we've done in RenderDoc
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.DebugOutputMute">
+            <summary>
+            Whether debug outputting is to be muted or not
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.CaptureAllCmdLists">
+            <summary>
+            Whether RenderDoc will capture all command lists
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.RefAllResources">
+            <summary>
+            Whether RenderDoc will reference all resources
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.HookIntoChildren">
+            <summary>
+            Whether RenderDoc should hook into child processes
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.VerifyBufferAccess">
+            <summary>
+            Whether RenderDoc should verify buffer access
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.DelayForDebugger">
+            <summary>
+            How long to wait until capturing frames in milliseconds
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.CaptureCallstacksOnlyDraws">
+            <summary>
+            Whether RenderDoc should only capture callstacks for drawing operations
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.CaptureCallstacks">
+            <summary>
+            Whether RenderDoc should capture callstacks
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.OverlayFrameNumber">
+            <summary>
+            Whether the frame number is visible in the overlay
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.OverlayCaptureList">
+            <summary>
+            Whether the number of captures is visible in the overlay
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.AllowVSync">
+            <summary>
+            Whether the game is allowed to use VSync while being captured by RenderDoc
+            </summary>
+        </member>
+        <member name="P:Vessel.Debug.RenderDoc.AllowFullscreen">
+            <summary>
+            Whether the game can use Fullscreen while being captured by RenderDoc
+            </summary>
+        </member>
+        <member name="M:Vessel.GraphicsDevice.Clear(Vessel.Color)">
+            <summary>
+            Clears the backbuffer to the specified color
+            </summary>
+            <param name="color">The color to clear to</param>
+        </member>
+        <member name="M:Vessel.GraphicsDevice.ClearDepthBuffer(System.Single)">
+            <summary>
+            Clears the depth buffer to the specified value
+            </summary>
+            <param name="targetDepth"></param>
+        </member>
+        <member name="M:Vessel.GraphicsDevice.SetGraphicsAPI(Vessel.GraphicsAPI)">
+            <summary>
+            Changes the graphics API to specified graphics API.
+            Returns whether or not the API was successfully changed.
+            </summary>
+            <param name="api"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Vessel.GraphicsDevice.IsGraphicsAPISupported(Vessel.GraphicsAPI)">
+            <summary>
+            Returns whether the specified Graphics API is supported
+            </summary>
+            <param name="api"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Vessel.GraphicsDevice.BindBuffer``1(Vessel.VertexBuffer{``0})">
+            <summary>
+            Binds the vertex buffer to the GPU
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="vertexBuffer"></param>
+        </member>
+        <member name="M:Vessel.GraphicsDevice.BindBuffer(Vessel.IndexBuffer)">
+            <summary>
+            Binds the index buffer to the GPU
+            </summary>
+            <param name="indexBuffer"></param>
+        </member>
+        <member name="M:Vessel.GraphicsDevice.Initialise(Vessel.VesselWindow,Vessel.ApplicationConfig)">
+            <summary>
+            Initialises the GraphicsDevice
+            </summary>
+            <param name="graphicsAPI"></param>
+        </member>
+        <member name="M:Vessel.GraphicsDevice.Dispose">
+            <summary>
+            Disposes of all graphics objects and shuts down the renderer
+            </summary>
+        </member>
+        <member name="M:Vessel.GraphicsDevice.BindToWindowBuffer">
+            <summary>
+            Binds a viewport to window framebuffer
+            </summary>
+        </member>
+        <member name="M:Vessel.GraphicsDevice.OnFrameBegin">
+            <summary>
+            Resets the graphics device's temporary buffers which may be disabled if performance is desired
+            </summary>
+        </member>
+        <member name="M:Vessel.GraphicsDevice.OnFrameEnd">
+            <summary>
+            Submits the queued draw calls to the GPU
+            </summary>
+        </member>
+        <member name="F:Vessel.GraphicsAPI.Direct3D11">
+            <summary>
+            Direct3D 11.
+            </summary>
+        </member>
+        <member name="F:Vessel.GraphicsAPI.Vulkan">
+            <summary>
+            Vulkan.
+            </summary>
+        </member>
+        <member name="F:Vessel.GraphicsAPI.OpenGL">
+            <summary>
+            OpenGL.
+            </summary>
+        </member>
+        <member name="F:Vessel.GraphicsAPI.Metal">
+            <summary>
+            Metal.
+            </summary>
+        </member>
+        <member name="F:Vessel.GraphicsAPI.OpenGLES">
+            <summary>
+            OpenGL ES.
+            </summary>
+        </member>
+        <member name="F:Vessel.GraphicsAPI.Default">
+            <summary>
+            Defrault. Selects the best graphics API available on the current platform.
+            </summary>
+        </member>
+        <member name="T:Vessel.Gui">
+            <summary>
+            An immediate mode GUI class.
+            </summary>
+        </member>
+        <member name="M:Vessel.Gui.Begin(System.String)">
+            <summary>
+            Constructs an ImGUI window
+            </summary>
+            <param name="name">The name of the window</param>
+            <returns>Whether the window is open or not</returns>
+        </member>
+        <member name="M:Vessel.Gui.ShowRenderDocWindow">
+            <summary>
+            Draws a utility window for interacting with RenderDoc
+            </summary>
+        </member>
+        <member name="T:Vessel.ImGUILayer">
+            <summary>
+            A <see cref="T:Vessel.Graphics.RenderLayer"/> which allows you to use ImGUI in Vessel
+            </summary>
+        </member>
+        <member name="F:Vessel.ImGUILayer.OnGUI">
+            <summary>
+            The draw GUI event
+            </summary>
+        </member>
+        <member name="M:Vessel.ImGUILayer.#ctor(Vessel.GraphicsDevice)">
+            <summary>
+            Creates a new ImGUI Render Layer
+            </summary>
+            <param name="graphicsDevice">The graphics device ImGUI will draw with</param>
+        </member>
+        <member name="M:Vessel.ImGUILayer.Draw">
+            <summary>
+            Handles ImGUI
+            </summary>
+        </member>
+        <member name="T:Vessel.Graphics.IRenderPath">
+            <summary>
+            Represents a render path
+            </summary>
+        </member>
+        <member name="M:Vessel.Graphics.IRenderPath.Draw(Vessel.Scene)">
+            <summary>
+            Draws a sceme using this render path. 
+            For a base renderer see <see cref="T:Vessel.RendererForward"/>
+            </summary>
+            <param name="scene"></param>
+        </member>
+        <member name="T:Vessel.RenderPath">
+            <summary>
+            A rendering path 
+            </summary>
+        </member>
+        <member name="F:Vessel.RenderPath.Forward">
+            <summary>
+            Forward rendering
+            </summary>
+        </member>
+        <member name="F:Vessel.RenderPath.Custom">
+            <summary>
+            A custom render path
+            </summary>
+        </member>
+        <member name="M:Vessel.Shader.InitPipeline">
+            <summary>
+            Initializes the pipeline
+            </summary>
+        </member>
+        <member name="T:Vessel.ShaderBase">
+            <summary>
+            A common base class for all shader types
+            </summary>
+        </member>
+        <member name="P:Vessel.ShaderBase.AssetPath">
+            <summary>
+            The path to the shader in the <see cref="T:Vessel.AssetBank"/>
+            </summary>
+        </member>
+        <member name="P:Vessel.ShaderBase.IsLoaded">
+            <summary>
+            Whether the shader is loaded or not
+            </summary>
+        </member>
+        <member name="M:Vessel.ShaderBase.Apply">
+            <summary>
+            Binds the shader to the GPU
+            </summary>
+        </member>
+        <member name="M:Vessel.ShaderBase.Unload">
+            <summary>
+            Unloads the shader
+            </summary>
+        </member>
+        <member name="M:Vessel.ShaderBase.Dispose">
+            <summary>
+            Disposes the shader, destroying the resources associated with it, making it unusable
+            </summary>
+        </member>
+        <member name="T:Vessel.ShaderFactory">
+            <summary>
+            Contains Default shaders
+            </summary>
+        </member>
+        <member name="M:Vessel.ShaderTechnique.#ctor(Vessel.GraphicsDevice,Vessel.AssetBank,System.String)">
+            <summary>
+            Attempts to load a shader by extracting the binary blob from the asset bank at the specified resource
+            </summary>
+            <param name="sourceBank"></param>
+            <param name="shaderName"></param>
+        </member>
+        <member name="M:Vessel.ShaderTechnique.#ctor(Vessel.GraphicsDevice,System.String)">
+            <summary>
+            Attempts to load a shader from the file at the specified path
+            </summary>
+            <param name="file">An absolute path which points to a shader object</param>
+        </member>
+        <member name="M:Vessel.ShaderTechnique.#ctor(Vessel.GraphicsDevice,System.Byte[],System.String)">
+            <summary>
+            Attempts to load a shader from the given byte[]
+            </summary>
+            <param name="shaderBinary">The byte stream</param>
+        </member>
+        <member name="M:Vessel.ShaderTechnique.LoadFromShaderBinary(Vessel.GraphicsDevice,System.Byte[])">
+            <summary>
+            Loads the shader from the binary object
+            </summary>
+            <param name="bytes">The byte stream</param>
+        </member>
+        <member name="M:Vessel.ShaderTechnique.Dispose">
+            <summary>
+            Disposes the shaders
+            </summary>
+        </member>
+        <member name="M:Vessel.VesselWindow.Invalidate">
+            <summary>
+            Updates the window with the new properties
+            </summary>
+        </member>
+        <member name="F:Vessel.ApplicationConfig.RenderDoc">
+            <summary>
+            Whether to use RenderDoc or not
+            </summary>
+        </member>
+        <member name="T:Vessel.BoundingBox">
+            <summary>
+            Represents an axis-aligned bounding box (AABB) in 3D space.
+            </summary>
+        </member>
+        <member name="F:Vessel.BoundingBox.Min">
+            <summary>
+              The minimum extent of this <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+        </member>
+        <member name="F:Vessel.BoundingBox.Max">
+            <summary>
+              The maximum extent of this <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+        </member>
+        <member name="F:Vessel.BoundingBox.CornerCount">
+            <summary>
+              The number of corners in a <see cref="T:Vessel.BoundingBox"/>. This is equal to 8.
+            </summary>
+        </member>
+        <member name="M:Vessel.BoundingBox.#ctor(System.Numerics.Vector3,System.Numerics.Vector3)">
+            <summary>
+              Create a <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <param name="min">The minimum extent of the <see cref="T:Vessel.BoundingBox"/>.</param>
+            <param name="max">The maximum extent of the <see cref="T:Vessel.BoundingBox"/>.</param>
+        </member>
+        <member name="M:Vessel.BoundingBox.Contains(Vessel.BoundingBox)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> contains another <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <param name="box">The <see cref="T:Vessel.BoundingBox"/> to test for overlap.</param>
+            <returns>
+              A value indicating if this <see cref="T:Vessel.BoundingBox"/> contains,
+              intersects with or is disjoint with <paramref name="box"/>.
+            </returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.Contains(Vessel.BoundingBox@,Vessel.ContainmentType@)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> contains another <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <param name="box">The <see cref="T:Vessel.BoundingBox"/> to test for overlap.</param>
+            <param name="result">
+              A value indicating if this <see cref="T:Vessel.BoundingBox"/> contains,
+              intersects with or is disjoint with <paramref name="box"/>.
+            </param>
+        </member>
+        <member name="M:Vessel.BoundingBox.Contains(Vessel.BoundingFrustum)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> contains a <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="frustum">The <see cref="T:Vessel.BoundingFrustum"/> to test for overlap.</param>
+            <returns>
+              A value indicating if this <see cref="T:Vessel.BoundingBox"/> contains,
+              intersects with or is disjoint with <paramref name="frustum"/>.
+            </returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.Contains(Vessel.BoundingSphere)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> contains a <see cref="T:Vessel.BoundingSphere"/>.
+            </summary>
+            <param name="sphere">The <see cref="T:Vessel.BoundingSphere"/> to test for overlap.</param>
+            <returns>
+              A value indicating if this <see cref="T:Vessel.BoundingBox"/> contains,
+              intersects with or is disjoint with <paramref name="sphere"/>.
+            </returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.Contains(Vessel.BoundingSphere@,Vessel.ContainmentType@)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> contains a <see cref="T:Vessel.BoundingSphere"/>.
+            </summary>
+            <param name="sphere">The <see cref="T:Vessel.BoundingSphere"/> to test for overlap.</param>
+            <param name="result">
+              A value indicating if this <see cref="T:Vessel.BoundingBox"/> contains,
+              intersects with or is disjoint with <paramref name="sphere"/>.
+            </param>
+        </member>
+        <member name="M:Vessel.BoundingBox.Contains(System.Numerics.Vector3)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> contains a point.
+            </summary>
+            <param name="point">The <see cref="T:System.Numerics.Vector3"/> to test.</param>
+            <returns>
+              <see cref="F:Vessel.ContainmentType.Contains"/> if this <see cref="T:Vessel.BoundingBox"/> contains
+              <paramref name="point"/> or <see cref="F:Vessel.ContainmentType.Disjoint"/> if it does not.
+            </returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.Contains(System.Numerics.Vector3@,Vessel.ContainmentType@)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> contains a point.
+            </summary>
+            <param name="point">The <see cref="T:System.Numerics.Vector3"/> to test.</param>
+            <param name="result">
+              <see cref="F:Vessel.ContainmentType.Contains"/> if this <see cref="T:Vessel.BoundingBox"/> contains
+              <paramref name="point"/> or <see cref="F:Vessel.ContainmentType.Disjoint"/> if it does not.
+            </param>
+        </member>
+        <member name="M:Vessel.BoundingBox.CreateFromPoints(System.Numerics.Vector3[],System.Int32,System.Int32)">
+            <summary>
+            Create a bounding box from the given list of points.
+            </summary>
+            <param name="points">The array of Vector3 instances defining the point cloud to bound</param>
+            <param name="index">The base index to start iterating from</param>
+            <param name="count">The number of points to iterate</param>
+            <returns>A bounding box that encapsulates the given point cloud.</returns>
+            <exception cref="T:System.ArgumentException">Thrown if the given array is null or has no points.</exception>
+        </member>
+        <member name="M:Vessel.BoundingBox.CreateFromPoints(System.Collections.Generic.List{System.Numerics.Vector3},System.Int32,System.Int32)">
+            <summary>
+            Create a bounding box from the given list of points.
+            </summary>
+            <param name="points">The list of Vector3 instances defining the point cloud to bound</param>
+            <param name="index">The base index to start iterating from</param>
+            <param name="count">The number of points to iterate</param>
+            <returns>A bounding box that encapsulates the given point cloud.</returns>
+            <exception cref="T:System.ArgumentException">Thrown if the given list is null or has no points.</exception>
+        </member>
+        <member name="M:Vessel.BoundingBox.CreateFromPoints(System.Collections.Generic.IEnumerable{System.Numerics.Vector3})">
+            <summary>
+              Create the enclosing <see cref="T:Vessel.BoundingBox"/> from the given list of points.
+            </summary>
+            <param name="points">The list of <see cref="T:System.Numerics.Vector3"/> instances defining the point cloud to bound.</param>
+            <returns>A <see cref="T:Vessel.BoundingBox"/> that encloses the given point cloud.</returns>
+            <exception cref="T:System.ArgumentException">Thrown if the given list has no points.</exception>
+        </member>
+        <member name="M:Vessel.BoundingBox.CreateFromSphere(Vessel.BoundingSphere)">
+            <summary>
+              Create the enclosing <see cref="T:Vessel.BoundingBox"/> of a <see cref="T:Vessel.BoundingSphere"/>.
+            </summary>
+            <param name="sphere">The <see cref="T:Vessel.BoundingSphere"/> to enclose.</param>
+            <returns>A <see cref="T:Vessel.BoundingBox"/> enclosing <paramref name="sphere"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.CreateFromSphere(Vessel.BoundingSphere@,Vessel.BoundingBox@)">
+            <summary>
+              Create the enclosing <see cref="T:Vessel.BoundingBox"/> of a <see cref="T:Vessel.BoundingSphere"/>.
+            </summary>
+            <param name="sphere">The <see cref="T:Vessel.BoundingSphere"/> to enclose.</param>
+            <param name="result">A <see cref="T:Vessel.BoundingBox"/> enclosing <paramref name="sphere"/>.</param>
+        </member>
+        <member name="M:Vessel.BoundingBox.CreateMerged(Vessel.BoundingBox,Vessel.BoundingBox)">
+            <summary>
+              Create the <see cref="T:Vessel.BoundingBox"/> enclosing two other <see cref="T:Vessel.BoundingBox"/> instances.
+            </summary>
+            <param name="original">A <see cref="T:Vessel.BoundingBox"/> to enclose.</param>
+            <param name="additional">A <see cref="T:Vessel.BoundingBox"/> to enclose.</param>
+            <returns>
+              The <see cref="T:Vessel.BoundingBox"/> enclosing <paramref name="original"/> and <paramref name="additional"/>.
+            </returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.CreateMerged(Vessel.BoundingBox@,Vessel.BoundingBox@,Vessel.BoundingBox@)">
+            <summary>
+              Create the <see cref="T:Vessel.BoundingBox"/> enclosing two other <see cref="T:Vessel.BoundingBox"/> instances.
+            </summary>
+            <param name="original">A <see cref="T:Vessel.BoundingBox"/> to enclose.</param>
+            <param name="additional">A <see cref="T:Vessel.BoundingBox"/> to enclose.</param>
+            <param name="result">
+              The <see cref="T:Vessel.BoundingBox"/> enclosing <paramref name="original"/> and <paramref name="additional"/>.
+            </param>
+        </member>
+        <member name="M:Vessel.BoundingBox.Equals(Vessel.BoundingBox)">
+            <summary>
+              Check if two <see cref="T:Vessel.BoundingBox"/> instances are equal.
+            </summary>
+            <param name="other">The <see cref="T:Vessel.BoundingBox"/> to compare with this <see cref="T:Vessel.BoundingBox"/>.</param>
+            <returns>
+              <code>true</code> if <see cref="!:other"/> is equal to this <see cref="T:Vessel.BoundingBox"/>,
+              <code>false</code> if it is not.
+            </returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.Equals(System.Object)">
+            <summary>
+              Check if two <see cref="T:Vessel.BoundingBox"/> instances are equal.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this <see cref="T:Vessel.BoundingBox"/>.</param>
+            <returns>
+              <code>true</code> if <see cref="!:obj"/> is equal to this <see cref="T:Vessel.BoundingBox"/>,
+              <code>false</code> if it is not.
+            </returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.GetCorners">
+            <summary>
+              Get an array of <see cref="T:System.Numerics.Vector3"/> containing the corners of this <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <returns>An array of <see cref="T:System.Numerics.Vector3"/> containing the corners of this <see cref="T:Vessel.BoundingBox"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.GetCorners(System.Numerics.Vector3[])">
+            <summary>
+              Fill the first 8 places of an array of <see cref="T:System.Numerics.Vector3"/>
+              with the corners of this <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <param name="corners">The array to fill.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="corners"/> is <code>null</code>.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+              If <paramref name="corners"/> has a length of less than 8.
+            </exception>
+        </member>
+        <member name="M:Vessel.BoundingBox.GetHashCode">
+            <summary>
+              Get the hash code for this <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <returns>A hash code for this <see cref="T:Vessel.BoundingBox"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.Intersects(Vessel.BoundingBox)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> intersects another <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <param name="box">The <see cref="T:Vessel.BoundingBox"/> to test for intersection.</param>
+            <returns>
+              <code>true</code> if this <see cref="T:Vessel.BoundingBox"/> intersects <paramref name="box"/>,
+              <code>false</code> if it does not.
+            </returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.Intersects(Vessel.BoundingBox@,System.Boolean@)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> intersects another <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <param name="box">The <see cref="T:Vessel.BoundingBox"/> to test for intersection.</param>
+            <param name="result">
+              <code>true</code> if this <see cref="T:Vessel.BoundingBox"/> intersects <paramref name="box"/>,
+              <code>false</code> if it does not.
+            </param>
+        </member>
+        <member name="M:Vessel.BoundingBox.Intersects(Vessel.BoundingFrustum)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> intersects a <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="frustum">The <see cref="T:Vessel.BoundingFrustum"/> to test for intersection.</param>
+            <returns>
+              <code>true</code> if this <see cref="T:Vessel.BoundingBox"/> intersects <paramref name="frustum"/>,
+              <code>false</code> if it does not.
+            </returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.Intersects(Vessel.BoundingSphere)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> intersects a <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="sphere">The <see cref="T:Vessel.BoundingFrustum"/> to test for intersection.</param>
+            <returns>
+              <code>true</code> if this <see cref="T:Vessel.BoundingBox"/> intersects <paramref name="sphere"/>,
+              <code>false</code> if it does not.
+            </returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.Intersects(Vessel.BoundingSphere@,System.Boolean@)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> intersects a <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="sphere">The <see cref="T:Vessel.BoundingFrustum"/> to test for intersection.</param>
+            <param name="result">
+              <code>true</code> if this <see cref="T:Vessel.BoundingBox"/> intersects <paramref name="sphere"/>,
+              <code>false</code> if it does not.
+            </param>
+        </member>
+        <member name="M:Vessel.BoundingBox.Intersects(Vessel.Plane)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> intersects a <see cref="T:Vessel.Plane"/>.
+            </summary>
+            <param name="plane">The <see cref="T:Vessel.Plane"/> to test for intersection.</param>
+            <returns>
+              <code>true</code> if this <see cref="T:Vessel.BoundingBox"/> intersects <paramref name="plane"/>,
+              <code>false</code> if it does not.
+            </returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.Intersects(Vessel.Plane@,Vessel.PlaneIntersectionType@)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> intersects a <see cref="T:Vessel.Plane"/>.
+            </summary>
+            <param name="plane">The <see cref="T:Vessel.Plane"/> to test for intersection.</param>
+            <param name="result">
+              <code>true</code> if this <see cref="T:Vessel.BoundingBox"/> intersects <paramref name="plane"/>,
+              <code>false</code> if it does not.
+            </param>
+        </member>
+        <member name="M:Vessel.BoundingBox.Intersects(Vessel.Ray)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> intersects a <see cref="T:Vessel.Ray"/>.
+            </summary>
+            <param name="ray">The <see cref="T:Vessel.Ray"/> to test for intersection.</param>
+            <returns>
+              The distance along the <see cref="T:Vessel.Ray"/> to the intersection point or
+              <code>null</code> if the <see cref="T:Vessel.Ray"/> does not intesect this <see cref="T:Vessel.BoundingBox"/>.
+            </returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.Intersects(Vessel.Ray@,System.Nullable{System.Single}@)">
+            <summary>
+              Check if this <see cref="T:Vessel.BoundingBox"/> intersects a <see cref="T:Vessel.Ray"/>.
+            </summary>
+            <param name="ray">The <see cref="T:Vessel.Ray"/> to test for intersection.</param>
+            <param name="result">
+              The distance along the <see cref="T:Vessel.Ray"/> to the intersection point or
+              <code>null</code> if the <see cref="T:Vessel.Ray"/> does not intesect this <see cref="T:Vessel.BoundingBox"/>.
+            </param>
+        </member>
+        <member name="M:Vessel.BoundingBox.op_Equality(Vessel.BoundingBox,Vessel.BoundingBox)">
+            <summary>
+              Check if two <see cref="T:Vessel.BoundingBox"/> instances are equal.
+            </summary>
+            <param name="a">A <see cref="T:Vessel.BoundingBox"/> to compare the other.</param>
+            <param name="b">A <see cref="T:Vessel.BoundingBox"/> to compare the other.</param>
+            <returns>
+              <code>true</code> if <see cref="!:a"/> is equal to this <see cref="!:b"/>,
+              <code>false</code> if it is not.
+            </returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.op_Inequality(Vessel.BoundingBox,Vessel.BoundingBox)">
+            <summary>
+              Check if two <see cref="T:Vessel.BoundingBox"/> instances are not equal.
+            </summary>
+            <param name="a">A <see cref="T:Vessel.BoundingBox"/> to compare the other.</param>
+            <param name="b">A <see cref="T:Vessel.BoundingBox"/> to compare the other.</param>
+            <returns>
+              <code>true</code> if <see cref="!:a"/> is not equal to this <see cref="!:b"/>,
+              <code>false</code> if it is.
+            </returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.ToString">
+            <summary>
+            Get a <see cref="T:System.String"/> representation of this <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <returns>A <see cref="T:System.String"/> representation of this <see cref="T:Vessel.BoundingBox"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingBox.Deconstruct(System.Numerics.Vector3@,System.Numerics.Vector3@)">
+            <summary>
+            Deconstruction method for <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <param name="min"></param>
+            <param name="max"></param>
+        </member>
+        <member name="T:Vessel.BoundingFrustum">
+            <summary>
+            Defines a viewing frustum for intersection operations.
+            </summary>
+        </member>
+        <member name="F:Vessel.BoundingFrustum.PlaneCount">
+            <summary>
+            The number of planes in the frustum.
+            </summary>
+        </member>
+        <member name="F:Vessel.BoundingFrustum.CornerCount">
+            <summary>
+            The number of corner points in the frustum.
+            </summary>
+        </member>
+        <member name="P:Vessel.BoundingFrustum.Matrix">
+            <summary>
+            Gets or sets the <see cref="P:Vessel.BoundingFrustum.Matrix"/> of the frustum.
+            </summary>
+        </member>
+        <member name="P:Vessel.BoundingFrustum.Near">
+            <summary>
+            Gets the near plane of the frustum.
+            </summary>
+        </member>
+        <member name="P:Vessel.BoundingFrustum.Far">
+            <summary>
+            Gets the far plane of the frustum.
+            </summary>
+        </member>
+        <member name="P:Vessel.BoundingFrustum.Left">
+            <summary>
+            Gets the left plane of the frustum.
+            </summary>
+        </member>
+        <member name="P:Vessel.BoundingFrustum.Right">
+            <summary>
+            Gets the right plane of the frustum.
+            </summary>
+        </member>
+        <member name="P:Vessel.BoundingFrustum.Top">
+            <summary>
+            Gets the top plane of the frustum.
+            </summary>
+        </member>
+        <member name="P:Vessel.BoundingFrustum.Bottom">
+            <summary>
+            Gets the bottom plane of the frustum.
+            </summary>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.#ctor(System.Numerics.Matrix4x4)">
+            <summary>
+            Constructs the frustum by extracting the view planes from a matrix.
+            </summary>
+            <param name="value">Combined matrix which usually is (View * Projection).</param>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.op_Equality(Vessel.BoundingFrustum,Vessel.BoundingFrustum)">
+            <summary>
+            Compares whether two <see cref="T:Vessel.BoundingFrustum"/> instances are equal.
+            </summary>
+            <param name="a"><see cref="T:Vessel.BoundingFrustum"/> instance on the left of the equal sign.</param>
+            <param name="b"><see cref="T:Vessel.BoundingFrustum"/> instance on the right of the equal sign.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.op_Inequality(Vessel.BoundingFrustum,Vessel.BoundingFrustum)">
+            <summary>
+            Compares whether two <see cref="T:Vessel.BoundingFrustum"/> instances are not equal.
+            </summary>
+            <param name="a"><see cref="T:Vessel.BoundingFrustum"/> instance on the left of the not equal sign.</param>
+            <param name="b"><see cref="T:Vessel.BoundingFrustum"/> instance on the right of the not equal sign.</param>
+            <returns><c>true</c> if the instances are not equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Contains(Vessel.BoundingBox)">
+            <summary>
+            Containment test between this <see cref="T:Vessel.BoundingFrustum"/> and specified <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <param name="box">A <see cref="T:Vessel.BoundingBox"/> for testing.</param>
+            <returns>Result of testing for containment between this <see cref="T:Vessel.BoundingFrustum"/> and specified <see cref="T:Vessel.BoundingBox"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Contains(Vessel.BoundingBox@,Vessel.ContainmentType@)">
+            <summary>
+            Containment test between this <see cref="T:Vessel.BoundingFrustum"/> and specified <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <param name="box">A <see cref="T:Vessel.BoundingBox"/> for testing.</param>
+            <param name="result">Result of testing for containment between this <see cref="T:Vessel.BoundingFrustum"/> and specified <see cref="T:Vessel.BoundingBox"/> as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Contains(Vessel.BoundingFrustum)">
+            <summary>
+            Containment test between this <see cref="T:Vessel.BoundingFrustum"/> and specified <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="frustum">A <see cref="T:Vessel.BoundingFrustum"/> for testing.</param>
+            <returns>Result of testing for containment between this <see cref="T:Vessel.BoundingFrustum"/> and specified <see cref="T:Vessel.BoundingFrustum"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Contains(Vessel.BoundingSphere)">
+            <summary>
+            Containment test between this <see cref="T:Vessel.BoundingFrustum"/> and specified <see cref="T:Vessel.BoundingSphere"/>.
+            </summary>
+            <param name="sphere">A <see cref="T:Vessel.BoundingSphere"/> for testing.</param>
+            <returns>Result of testing for containment between this <see cref="T:Vessel.BoundingFrustum"/> and specified <see cref="T:Vessel.BoundingSphere"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Contains(Vessel.BoundingSphere@,Vessel.ContainmentType@)">
+            <summary>
+            Containment test between this <see cref="T:Vessel.BoundingFrustum"/> and specified <see cref="T:Vessel.BoundingSphere"/>.
+            </summary>
+            <param name="sphere">A <see cref="T:Vessel.BoundingSphere"/> for testing.</param>
+            <param name="result">Result of testing for containment between this <see cref="T:Vessel.BoundingFrustum"/> and specified <see cref="T:Vessel.BoundingSphere"/> as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Contains(System.Numerics.Vector3)">
+            <summary>
+            Containment test between this <see cref="T:Vessel.BoundingFrustum"/> and specified <see cref="T:System.Numerics.Vector3"/>.
+            </summary>
+            <param name="point">A <see cref="T:System.Numerics.Vector3"/> for testing.</param>
+            <returns>Result of testing for containment between this <see cref="T:Vessel.BoundingFrustum"/> and specified <see cref="T:System.Numerics.Vector3"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Contains(System.Numerics.Vector3@,Vessel.ContainmentType@)">
+            <summary>
+            Containment test between this <see cref="T:Vessel.BoundingFrustum"/> and specified <see cref="T:System.Numerics.Vector3"/>.
+            </summary>
+            <param name="point">A <see cref="T:System.Numerics.Vector3"/> for testing.</param>
+            <param name="result">Result of testing for containment between this <see cref="T:Vessel.BoundingFrustum"/> and specified <see cref="T:System.Numerics.Vector3"/> as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Equals(Vessel.BoundingFrustum)">
+            <summary>
+            Compares whether current instance is equal to specified <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="other">The <see cref="T:Vessel.BoundingFrustum"/> to compare.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Equals(System.Object)">
+            <summary>
+            Compares whether current instance is equal to specified <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.GetCorners">
+            <summary>
+            Returns a copy of internal corners array.
+            </summary>
+            <returns>The array of corners.</returns>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.GetCorners(System.Numerics.Vector3[])">
+            <summary>
+            Returns a copy of internal corners array.
+            </summary>
+            <param name="corners">The array which values will be replaced to corner values of this instance. It must have size of <see cref="F:Vessel.BoundingFrustum.CornerCount"/>.</param>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.GetHashCode">
+            <summary>
+            Gets the hash code of this <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <returns>Hash code of this <see cref="T:Vessel.BoundingFrustum"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Intersects(Vessel.BoundingBox)">
+            <summary>
+            Gets whether or not a specified <see cref="T:Vessel.BoundingBox"/> intersects with this <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="box">A <see cref="T:Vessel.BoundingBox"/> for intersection test.</param>
+            <returns><c>true</c> if specified <see cref="T:Vessel.BoundingBox"/> intersects with this <see cref="T:Vessel.BoundingFrustum"/>; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Intersects(Vessel.BoundingBox@,System.Boolean@)">
+            <summary>
+            Gets whether or not a specified <see cref="T:Vessel.BoundingBox"/> intersects with this <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="box">A <see cref="T:Vessel.BoundingBox"/> for intersection test.</param>
+            <param name="result"><c>true</c> if specified <see cref="T:Vessel.BoundingBox"/> intersects with this <see cref="T:Vessel.BoundingFrustum"/>; <c>false</c> otherwise as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Intersects(Vessel.BoundingFrustum)">
+            <summary>
+            Gets whether or not a specified <see cref="T:Vessel.BoundingFrustum"/> intersects with this <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="frustum">An other <see cref="T:Vessel.BoundingFrustum"/> for intersection test.</param>
+            <returns><c>true</c> if other <see cref="T:Vessel.BoundingFrustum"/> intersects with this <see cref="T:Vessel.BoundingFrustum"/>; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Intersects(Vessel.BoundingSphere)">
+            <summary>
+            Gets whether or not a specified <see cref="T:Vessel.BoundingSphere"/> intersects with this <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="sphere">A <see cref="T:Vessel.BoundingSphere"/> for intersection test.</param>
+            <returns><c>true</c> if specified <see cref="T:Vessel.BoundingSphere"/> intersects with this <see cref="T:Vessel.BoundingFrustum"/>; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Intersects(Vessel.BoundingSphere@,System.Boolean@)">
+            <summary>
+            Gets whether or not a specified <see cref="T:Vessel.BoundingSphere"/> intersects with this <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="sphere">A <see cref="T:Vessel.BoundingSphere"/> for intersection test.</param>
+            <param name="result"><c>true</c> if specified <see cref="T:Vessel.BoundingSphere"/> intersects with this <see cref="T:Vessel.BoundingFrustum"/>; <c>false</c> otherwise as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Intersects(Vessel.Plane)">
+            <summary>
+            Gets type of intersection between specified <see cref="T:Vessel.Plane"/> and this <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="plane">A <see cref="T:Vessel.Plane"/> for intersection test.</param>
+            <returns>A plane intersection type.</returns>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Intersects(Vessel.Plane@,Vessel.PlaneIntersectionType@)">
+            <summary>
+            Gets type of intersection between specified <see cref="T:Vessel.Plane"/> and this <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="plane">A <see cref="T:Vessel.Plane"/> for intersection test.</param>
+            <param name="result">A plane intersection type as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Intersects(Vessel.Ray)">
+            <summary>
+            Gets the distance of intersection of <see cref="T:Vessel.Ray"/> and this <see cref="T:Vessel.BoundingFrustum"/> or null if no intersection happens.
+            </summary>
+            <param name="ray">A <see cref="T:Vessel.Ray"/> for intersection test.</param>
+            <returns>Distance at which ray intersects with this <see cref="T:Vessel.BoundingFrustum"/> or null if no intersection happens.</returns>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.Intersects(Vessel.Ray@,System.Nullable{System.Single}@)">
+            <summary>
+            Gets the distance of intersection of <see cref="T:Vessel.Ray"/> and this <see cref="T:Vessel.BoundingFrustum"/> or null if no intersection happens.
+            </summary>
+            <param name="ray">A <see cref="T:Vessel.Ray"/> for intersection test.</param>
+            <param name="result">Distance at which ray intersects with this <see cref="T:Vessel.BoundingFrustum"/> or null if no intersection happens as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingFrustum.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> representation of this <see cref="T:Vessel.BoundingFrustum"/> in the format:
+            {Near:[nearPlane] Far:[farPlane] Left:[leftPlane] Right:[rightPlane] Top:[topPlane] Bottom:[bottomPlane]}
+            </summary>
+            <returns><see cref="T:System.String"/> representation of this <see cref="T:Vessel.BoundingFrustum"/>.</returns>
+        </member>
+        <member name="T:Vessel.BoundingSphere">
+            <summary>
+            Describes a sphere in 3D-space for bounding operations.
+            </summary>
+        </member>
+        <member name="F:Vessel.BoundingSphere.Center">
+            <summary>
+            The sphere center.
+            </summary>
+        </member>
+        <member name="F:Vessel.BoundingSphere.Radius">
+            <summary>
+            The sphere radius.
+            </summary>
+        </member>
+        <member name="M:Vessel.BoundingSphere.#ctor(System.Numerics.Vector3,System.Single)">
+            <summary>
+            Constructs a bounding sphere with the specified center and radius.  
+            </summary>
+            <param name="center">The sphere center.</param>
+            <param name="radius">The sphere radius.</param>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Contains(Vessel.BoundingBox)">
+            <summary>
+            Test if a bounding box is fully inside, outside, or just intersecting the sphere.
+            </summary>
+            <param name="box">The box for testing.</param>
+            <returns>The containment type.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Contains(Vessel.BoundingBox@,Vessel.ContainmentType@)">
+            <summary>
+            Test if a bounding box is fully inside, outside, or just intersecting the sphere.
+            </summary>
+            <param name="box">The box for testing.</param>
+            <param name="result">The containment type as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Contains(Vessel.BoundingFrustum)">
+            <summary>
+            Test if a frustum is fully inside, outside, or just intersecting the sphere.
+            </summary>
+            <param name="frustum">The frustum for testing.</param>
+            <returns>The containment type.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Contains(Vessel.BoundingFrustum@,Vessel.ContainmentType@)">
+            <summary>
+            Test if a frustum is fully inside, outside, or just intersecting the sphere.
+            </summary>
+            <param name="frustum">The frustum for testing.</param>
+            <param name="result">The containment type as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Contains(Vessel.BoundingSphere)">
+            <summary>
+            Test if a sphere is fully inside, outside, or just intersecting the sphere.
+            </summary>
+            <param name="sphere">The other sphere for testing.</param>
+            <returns>The containment type.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Contains(Vessel.BoundingSphere@,Vessel.ContainmentType@)">
+            <summary>
+            Test if a sphere is fully inside, outside, or just intersecting the sphere.
+            </summary>
+            <param name="sphere">The other sphere for testing.</param>
+            <param name="result">The containment type as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Contains(System.Numerics.Vector3)">
+            <summary>
+            Test if a point is fully inside, outside, or just intersecting the sphere.
+            </summary>
+            <param name="point">The vector in 3D-space for testing.</param>
+            <returns>The containment type.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Contains(System.Numerics.Vector3@,Vessel.ContainmentType@)">
+            <summary>
+            Test if a point is fully inside, outside, or just intersecting the sphere.
+            </summary>
+            <param name="point">The vector in 3D-space for testing.</param>
+            <param name="result">The containment type as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingSphere.CreateFromBoundingBox(Vessel.BoundingBox)">
+            <summary>
+            Creates the smallest <see cref="T:Vessel.BoundingSphere"/> that can contain a specified <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <param name="box">The box to create the sphere from.</param>
+            <returns>The new <see cref="T:Vessel.BoundingSphere"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.CreateFromBoundingBox(Vessel.BoundingBox@,Vessel.BoundingSphere@)">
+            <summary>
+            Creates the smallest <see cref="T:Vessel.BoundingSphere"/> that can contain a specified <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <param name="box">The box to create the sphere from.</param>
+            <param name="result">The new <see cref="T:Vessel.BoundingSphere"/> as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingSphere.CreateFromFrustum(Vessel.BoundingFrustum)">
+            <summary>
+            Creates the smallest <see cref="T:Vessel.BoundingSphere"/> that can contain a specified <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="frustum">The frustum to create the sphere from.</param>
+            <returns>The new <see cref="T:Vessel.BoundingSphere"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.CreateFromPoints(System.Collections.Generic.IEnumerable{System.Numerics.Vector3})">
+            <summary>
+            Creates the smallest <see cref="T:Vessel.BoundingSphere"/> that can contain a specified list of points in 3D-space. 
+            </summary>
+            <param name="points">List of point to create the sphere from.</param>
+            <returns>The new <see cref="T:Vessel.BoundingSphere"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.CreateMerged(Vessel.BoundingSphere,Vessel.BoundingSphere)">
+            <summary>
+            Creates the smallest <see cref="T:Vessel.BoundingSphere"/> that can contain two spheres.
+            </summary>
+            <param name="original">First sphere.</param>
+            <param name="additional">Second sphere.</param>
+            <returns>The new <see cref="T:Vessel.BoundingSphere"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.CreateMerged(Vessel.BoundingSphere@,Vessel.BoundingSphere@,Vessel.BoundingSphere@)">
+            <summary>
+            Creates the smallest <see cref="T:Vessel.BoundingSphere"/> that can contain two spheres.
+            </summary>
+            <param name="original">First sphere.</param>
+            <param name="additional">Second sphere.</param>
+            <param name="result">The new <see cref="T:Vessel.BoundingSphere"/> as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Equals(Vessel.BoundingSphere)">
+            <summary>
+            Compares whether current instance is equal to specified <see cref="T:Vessel.BoundingSphere"/>.
+            </summary>
+            <param name="other">The <see cref="T:Vessel.BoundingSphere"/> to compare.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Equals(System.Object)">
+            <summary>
+            Compares whether current instance is equal to specified <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.GetHashCode">
+            <summary>
+            Gets the hash code of this <see cref="T:Vessel.BoundingSphere"/>.
+            </summary>
+            <returns>Hash code of this <see cref="T:Vessel.BoundingSphere"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Intersects(Vessel.BoundingBox)">
+            <summary>
+            Gets whether or not a specified <see cref="T:Vessel.BoundingBox"/> intersects with this sphere.
+            </summary>
+            <param name="box">The box for testing.</param>
+            <returns><c>true</c> if <see cref="T:Vessel.BoundingBox"/> intersects with this sphere; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Intersects(Vessel.BoundingBox@,System.Boolean@)">
+            <summary>
+            Gets whether or not a specified <see cref="T:Vessel.BoundingBox"/> intersects with this sphere.
+            </summary>
+            <param name="box">The box for testing.</param>
+            <param name="result"><c>true</c> if <see cref="T:Vessel.BoundingBox"/> intersects with this sphere; <c>false</c> otherwise. As an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Intersects(Vessel.BoundingSphere)">
+            <summary>
+            Gets whether or not the other <see cref="T:Vessel.BoundingSphere"/> intersects with this sphere.
+            </summary>
+            <param name="sphere">The other sphere for testing.</param>
+            <returns><c>true</c> if other <see cref="T:Vessel.BoundingSphere"/> intersects with this sphere; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Intersects(Vessel.BoundingSphere@,System.Boolean@)">
+            <summary>
+            Gets whether or not the other <see cref="T:Vessel.BoundingSphere"/> intersects with this sphere.
+            </summary>
+            <param name="sphere">The other sphere for testing.</param>
+            <param name="result"><c>true</c> if other <see cref="T:Vessel.BoundingSphere"/> intersects with this sphere; <c>false</c> otherwise. As an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Intersects(Vessel.Plane)">
+            <summary>
+            Gets whether or not a specified <see cref="T:Vessel.Plane"/> intersects with this sphere.
+            </summary>
+            <param name="plane">The plane for testing.</param>
+            <returns>Type of intersection.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Intersects(Vessel.Plane@,Vessel.PlaneIntersectionType@)">
+            <summary>
+            Gets whether or not a specified <see cref="T:Vessel.Plane"/> intersects with this sphere.
+            </summary>
+            <param name="plane">The plane for testing.</param>
+            <param name="result">Type of intersection as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Intersects(Vessel.Ray)">
+            <summary>
+            Gets whether or not a specified <see cref="T:Vessel.Ray"/> intersects with this sphere.
+            </summary>
+            <param name="ray">The ray for testing.</param>
+            <returns>Distance of ray intersection or <c>null</c> if there is no intersection.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Intersects(Vessel.Ray@,System.Nullable{System.Single}@)">
+            <summary>
+            Gets whether or not a specified <see cref="T:Vessel.Ray"/> intersects with this sphere.
+            </summary>
+            <param name="ray">The ray for testing.</param>
+            <param name="result">Distance of ray intersection or <c>null</c> if there is no intersection as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingSphere.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> representation of this <see cref="T:Vessel.BoundingSphere"/> in the format:
+            {Center:[<see cref="F:Vessel.BoundingSphere.Center"/>] Radius:[<see cref="F:Vessel.BoundingSphere.Radius"/>]}
+            </summary>
+            <returns>A <see cref="T:System.String"/> representation of this <see cref="T:Vessel.BoundingSphere"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Transform(System.Numerics.Matrix4x4)">
+            <summary>
+            Creates a new <see cref="T:Vessel.BoundingSphere"/> that contains a transformation of translation and scale from this sphere by the specified <see cref="!:Matrix"/>.
+            </summary>
+            <param name="matrix">The transformation <see cref="!:Matrix"/>.</param>
+            <returns>Transformed <see cref="T:Vessel.BoundingSphere"/>.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Transform(System.Numerics.Matrix4x4@,Vessel.BoundingSphere@)">
+            <summary>
+            Creates a new <see cref="T:Vessel.BoundingSphere"/> that contains a transformation of translation and scale from this sphere by the specified <see cref="!:Matrix"/>.
+            </summary>
+            <param name="matrix">The transformation <see cref="!:Matrix"/>.</param>
+            <param name="result">Transformed <see cref="T:Vessel.BoundingSphere"/> as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.BoundingSphere.Deconstruct(System.Numerics.Vector3@,System.Single@)">
+            <summary>
+            Deconstruction method for <see cref="T:Vessel.BoundingSphere"/>.
+            </summary>
+            <param name="center"></param>
+            <param name="radius"></param>
+        </member>
+        <member name="M:Vessel.BoundingSphere.op_Equality(Vessel.BoundingSphere,Vessel.BoundingSphere)">
+            <summary>
+            Compares whether two <see cref="T:Vessel.BoundingSphere"/> instances are equal.
+            </summary>
+            <param name="a"><see cref="T:Vessel.BoundingSphere"/> instance on the left of the equal sign.</param>
+            <param name="b"><see cref="T:Vessel.BoundingSphere"/> instance on the right of the equal sign.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.BoundingSphere.op_Inequality(Vessel.BoundingSphere,Vessel.BoundingSphere)">
+            <summary>
+            Compares whether two <see cref="T:Vessel.BoundingSphere"/> instances are not equal.
+            </summary>
+            <param name="a"><see cref="T:Vessel.BoundingSphere"/> instance on the left of the not equal sign.</param>
+            <param name="b"><see cref="T:Vessel.BoundingSphere"/> instance on the right of the not equal sign.</param>
+            <returns><c>true</c> if the instances are not equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="T:Vessel.Color">
+            <summary>
+            Describes a 32-bit packed color.
+            </summary>
+        </member>
+        <member name="M:Vessel.Color.#ctor(System.UInt32)">
+            <summary>
+            Constructs an RGBA color from a packed value.
+            The value is a 32-bit unsigned integer, with R in the least significant octet.
+            </summary>
+            <param name="packedValue">The packed value.</param>
+        </member>
+        <member name="M:Vessel.Color.#ctor(System.Numerics.Vector4)">
+            <summary>
+            Constructs an RGBA color from the XYZW unit length components of a vector.
+            </summary>
+            <param name="color">A <see cref="T:System.Numerics.Vector4"/> representing color.</param>
+        </member>
+        <member name="M:Vessel.Color.#ctor(System.Numerics.Vector3)">
+            <summary>
+            Constructs an RGBA color from the XYZ unit length components of a vector. Alpha value will be opaque.
+            </summary>
+            <param name="color">A <see cref="T:System.Numerics.Vector3"/> representing color.</param>
+        </member>
+        <member name="M:Vessel.Color.#ctor(Vessel.Color,System.Int32)">
+            <summary>
+            Constructs an RGBA color from a <see cref="T:Vessel.Color"/> and an alpha value.
+            </summary>
+            <param name="color">A <see cref="T:Vessel.Color"/> for RGB values of new <see cref="T:Vessel.Color"/> instance.</param>
+            <param name="alpha">The alpha component value from 0 to 255.</param>
+        </member>
+        <member name="M:Vessel.Color.#ctor(Vessel.Color,System.Single)">
+            <summary>
+            Constructs an RGBA color from color and alpha value.
+            </summary>
+            <param name="color">A <see cref="T:Vessel.Color"/> for RGB values of new <see cref="T:Vessel.Color"/> instance.</param>
+            <param name="alpha">Alpha component value from 0.0f to 1.0f.</param>
+        </member>
+        <member name="M:Vessel.Color.#ctor(System.Single,System.Single,System.Single)">
+            <summary>
+            Constructs an RGBA color from scalars representing red, green and blue values. Alpha value will be opaque.
+            </summary>
+            <param name="r">Red component value from 0.0f to 1.0f.</param>
+            <param name="g">Green component value from 0.0f to 1.0f.</param>
+            <param name="b">Blue component value from 0.0f to 1.0f.</param>
+        </member>
+        <member name="M:Vessel.Color.#ctor(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Constructs an RGBA color from scalars representing red, green, blue and alpha values.
+            </summary>
+            <param name="r">Red component value from 0.0f to 1.0f.</param>
+            <param name="g">Green component value from 0.0f to 1.0f.</param>
+            <param name="b">Blue component value from 0.0f to 1.0f.</param>
+            <param name="alpha">Alpha component value from 0.0f to 1.0f.</param>
+        </member>
+        <member name="M:Vessel.Color.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Constructs an RGBA color from scalars representing red, green and blue values. Alpha value will be opaque.
+            </summary>
+            <param name="r">Red component value from 0 to 255.</param>
+            <param name="g">Green component value from 0 to 255.</param>
+            <param name="b">Blue component value from 0 to 255.</param>
+        </member>
+        <member name="M:Vessel.Color.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Constructs an RGBA color from scalars representing red, green, blue and alpha values.
+            </summary>
+            <param name="r">Red component value from 0 to 255.</param>
+            <param name="g">Green component value from 0 to 255.</param>
+            <param name="b">Blue component value from 0 to 255.</param>
+            <param name="alpha">Alpha component value from 0 to 255.</param>
+        </member>
+        <member name="M:Vessel.Color.FromNonPremultiplied(System.Numerics.Vector4)">
+            <summary>
+            Translate a non-premultipled alpha <see cref="T:Vessel.Color"/> to a <see cref="T:Vessel.Color"/> that contains premultiplied alpha.
+            </summary>
+            <param name="vector">A <see cref="T:System.Numerics.Vector4"/> representing color.</param>
+            <returns>A <see cref="T:Vessel.Color"/> which contains premultiplied alpha data.</returns>
+        </member>
+        <member name="M:Vessel.Color.FromNonPremultiplied(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Translate a non-premultipled alpha <see cref="T:Vessel.Color"/> to a <see cref="T:Vessel.Color"/> that contains premultiplied alpha.
+            </summary>
+            <param name="r">Red component value.</param>
+            <param name="g">Green component value.</param>
+            <param name="b">Blue component value.</param>
+            <param name="a">Alpha component value.</param>
+            <returns>A <see cref="T:Vessel.Color"/> which contains premultiplied alpha data.</returns>
+        </member>
+        <member name="P:Vessel.Color.B">
+            <summary>
+            Gets or sets the blue component.
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.G">
+            <summary>
+            Gets or sets the green component.
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.R">
+            <summary>
+            Gets or sets the red component.
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.A">
+            <summary>
+            Gets or sets the alpha component.
+            </summary>
+        </member>
+        <member name="M:Vessel.Color.Equals(Vessel.Color)">
+            <summary>
+            Compares whether current instance is equal to specified <see cref="T:Vessel.Color"/>.
+            </summary>
+            <param name="other">The <see cref="T:Vessel.Color"/> to compare.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Color.op_Equality(Vessel.Color,Vessel.Color)">
+            <summary>
+            Compares whether two <see cref="T:Vessel.Color"/> instances are equal.
+            </summary>
+            <param name="a"><see cref="T:Vessel.Color"/> instance on the left of the equal sign.</param>
+            <param name="b"><see cref="T:Vessel.Color"/> instance on the right of the equal sign.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Color.op_Inequality(Vessel.Color,Vessel.Color)">
+            <summary>
+            Compares whether two <see cref="T:Vessel.Color"/> instances are not equal.
+            </summary>
+            <param name="a"><see cref="T:Vessel.Color"/> instance on the left of the not equal sign.</param>
+            <param name="b"><see cref="T:Vessel.Color"/> instance on the right of the not equal sign.</param>
+            <returns><c>true</c> if the instances are not equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Color.GetHashCode">
+            <summary>
+            Gets the hash code of this <see cref="T:Vessel.Color"/>.
+            </summary>
+            <returns>Hash code of this <see cref="T:Vessel.Color"/>.</returns>
+        </member>
+        <member name="M:Vessel.Color.Equals(System.Object)">
+            <summary>
+            Compares whether current instance is equal to specified object.
+            </summary>
+            <param name="obj">The <see cref="T:Vessel.Color"/> to compare.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Color.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> representation of this <see cref="T:Vessel.Color"/> in the format:
+            {R:[red] G:[green] B:[blue] A:[alpha]}
+            </summary>
+            <returns><see cref="T:System.String"/> representation of this <see cref="T:Vessel.Color"/>.</returns>
+        </member>
+        <member name="M:Vessel.Color.Deconstruct(System.Byte@,System.Byte@,System.Byte@)">
+            <summary>
+            Deconstruction method for <see cref="T:Vessel.Color"/>.
+            </summary>
+            <param name="r">Red component value from 0 to 255.</param>
+            <param name="g">Green component value from 0 to 255.</param>
+            <param name="b">Blue component value from 0 to 255.</param>
+        </member>
+        <member name="M:Vessel.Color.Deconstruct(System.Single@,System.Single@,System.Single@)">
+            <summary>
+            Deconstruction method for <see cref="T:Vessel.Color"/>.
+            </summary>
+            <param name="r">Red component value from 0.0f to 1.0f.</param>
+            <param name="g">Green component value from 0.0f to 1.0f.</param>
+            <param name="b">Blue component value from 0.0f to 1.0f.</param>
+        </member>
+        <member name="M:Vessel.Color.Deconstruct(System.Byte@,System.Byte@,System.Byte@,System.Byte@)">
+            <summary>
+            Deconstruction method for <see cref="T:Vessel.Color"/> with Alpha.
+            </summary>
+            <param name="r">Red component value from 0 to 255.</param>
+            <param name="g">Green component value from 0 to 255.</param>
+            <param name="b">Blue component value from 0 to 255.</param>
+            <param name="a">Alpha component value from 0 to 255.</param>
+        </member>
+        <member name="M:Vessel.Color.Deconstruct(System.Single@,System.Single@,System.Single@,System.Single@)">
+            <summary>
+            Deconstruction method for <see cref="T:Vessel.Color"/> with Alpha.
+            </summary>
+            <param name="r">Red component value from 0.0f to 1.0f.</param>
+            <param name="g">Green component value from 0.0f to 1.0f.</param>
+            <param name="b">Blue component value from 0.0f to 1.0f.</param>
+            <param name="a">Alpha component value from 0.0f to 1.0f.</param>
+        </member>
+        <member name="M:Vessel.Color.ToVector3">
+            <summary>
+            Gets a <see cref="T:System.Numerics.Vector3"/> representation for this object.
+            </summary>
+            <returns>A <see cref="T:System.Numerics.Vector3"/> representation for this object.</returns>
+        </member>
+        <member name="M:Vessel.Color.ToVector4">
+            <summary>
+            Gets a <see cref="T:System.Numerics.Vector4"/> representation for this object.
+            </summary>
+            <returns>A <see cref="T:System.Numerics.Vector4"/> representation for this object.</returns>
+        </member>
+        <member name="M:Vessel.Color.Multiply(Vessel.Color,System.Single)">
+            <summary>
+            Multiply <see cref="T:Vessel.Color"/> by value.
+            </summary>
+            <param name="value">Source <see cref="T:Vessel.Color"/>.</param>
+            <param name="scale">Multiplicator.</param>
+            <returns>Multiplication result.</returns>
+        </member>
+        <member name="M:Vessel.Color.op_Multiply(Vessel.Color,System.Single)">
+            <summary>
+            Multiply <see cref="T:Vessel.Color"/> by value.
+            </summary>
+            <param name="value">Source <see cref="T:Vessel.Color"/>.</param>
+            <param name="scale">Multiplicator.</param>
+            <returns>Multiplication result.</returns>
+        </member>
+        <member name="M:Vessel.Color.Lerp(Vessel.Color,Vessel.Color,System.Single)">
+            <summary>
+            Performs linear interpolation of <see cref="T:Vessel.Color"/>.
+            </summary>
+            <param name="value1">Source <see cref="T:Vessel.Color"/>.</param>
+            <param name="value2">Destination <see cref="T:Vessel.Color"/>.</param>
+            <param name="amount">Interpolation factor.</param>
+            <returns>Interpolated <see cref="T:Vessel.Color"/>.</returns>
+        </member>
+        <member name="M:Vessel.Color.LerpPrecise(Vessel.Color,Vessel.Color,System.Single)">
+            <summary>
+            <see cref="M:Vessel.Color.Lerp(Vessel.Color,Vessel.Color,System.Single)"/> should be used instead of this function.
+            </summary>
+            <returns>Interpolated <see cref="T:Vessel.Color"/>.</returns>
+        </member>
+        <member name="P:Vessel.Color.Transparent">
+            <summary>
+            Transparent color (R:0,G:0,B:0,A:0).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.AliceBlue">
+            <summary>
+            AliceBlue color (R:240,G:248,B:255,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.AntiqueWhite">
+            <summary>
+            AntiqueWhite color (R:250,G:235,B:215,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Aqua">
+            <summary>
+            Aqua color (R:0,G:255,B:255,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Aquamarine">
+            <summary>
+            Aquamarine color (R:127,G:255,B:212,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Azure">
+            <summary>
+            Azure color (R:240,G:255,B:255,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Beige">
+            <summary>
+            Beige color (R:245,G:245,B:220,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Bisque">
+            <summary>
+            Bisque color (R:255,G:228,B:196,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Black">
+            <summary>
+            Black color (R:0,G:0,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.BlanchedAlmond">
+            <summary>
+            BlanchedAlmond color (R:255,G:235,B:205,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Blue">
+            <summary>
+            Blue color (R:0,G:0,B:255,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.BlueViolet">
+            <summary>
+            BlueViolet color (R:138,G:43,B:226,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Brown">
+            <summary>
+            Brown color (R:165,G:42,B:42,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.BurlyWood">
+            <summary>
+            BurlyWood color (R:222,G:184,B:135,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.CadetBlue">
+            <summary>
+            CadetBlue color (R:95,G:158,B:160,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Chartreuse">
+            <summary>
+            Chartreuse color (R:127,G:255,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Chocolate">
+            <summary>
+            Chocolate color (R:210,G:105,B:30,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Coral">
+            <summary>
+            Coral color (R:255,G:127,B:80,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.CornflowerBlue">
+            <summary>
+            CornflowerBlue color (R:100,G:149,B:237,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Cornsilk">
+            <summary>
+            Cornsilk color (R:255,G:248,B:220,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Crimson">
+            <summary>
+            Crimson color (R:220,G:20,B:60,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Cyan">
+            <summary>
+            Cyan color (R:0,G:255,B:255,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkBlue">
+            <summary>
+            DarkBlue color (R:0,G:0,B:139,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkCyan">
+            <summary>
+            DarkCyan color (R:0,G:139,B:139,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkGoldenrod">
+            <summary>
+            DarkGoldenrod color (R:184,G:134,B:11,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkGray">
+            <summary>
+            DarkGray color (R:169,G:169,B:169,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkGreen">
+            <summary>
+            DarkGreen color (R:0,G:100,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkKhaki">
+            <summary>
+            DarkKhaki color (R:189,G:183,B:107,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkMagenta">
+            <summary>
+            DarkMagenta color (R:139,G:0,B:139,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkOliveGreen">
+            <summary>
+            DarkOliveGreen color (R:85,G:107,B:47,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkOrange">
+            <summary>
+            DarkOrange color (R:255,G:140,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkOrchid">
+            <summary>
+            DarkOrchid color (R:153,G:50,B:204,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkRed">
+            <summary>
+            DarkRed color (R:139,G:0,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkSalmon">
+            <summary>
+            DarkSalmon color (R:233,G:150,B:122,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkSeaGreen">
+            <summary>
+            DarkSeaGreen color (R:143,G:188,B:139,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkSlateBlue">
+            <summary>
+            DarkSlateBlue color (R:72,G:61,B:139,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkSlateGray">
+            <summary>
+            DarkSlateGray color (R:47,G:79,B:79,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkTurquoise">
+            <summary>
+            DarkTurquoise color (R:0,G:206,B:209,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DarkViolet">
+            <summary>
+            DarkViolet color (R:148,G:0,B:211,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DeepPink">
+            <summary>
+            DeepPink color (R:255,G:20,B:147,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DeepSkyBlue">
+            <summary>
+            DeepSkyBlue color (R:0,G:191,B:255,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DimGray">
+            <summary>
+            DimGray color (R:105,G:105,B:105,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.DodgerBlue">
+            <summary>
+            DodgerBlue color (R:30,G:144,B:255,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Firebrick">
+            <summary>
+            Firebrick color (R:178,G:34,B:34,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.FloralWhite">
+            <summary>
+            FloralWhite color (R:255,G:250,B:240,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.ForestGreen">
+            <summary>
+            ForestGreen color (R:34,G:139,B:34,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Fuchsia">
+            <summary>
+            Fuchsia color (R:255,G:0,B:255,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Gainsboro">
+            <summary>
+            Gainsboro color (R:220,G:220,B:220,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.GhostWhite">
+            <summary>
+            GhostWhite color (R:248,G:248,B:255,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Gold">
+            <summary>
+            Gold color (R:255,G:215,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Goldenrod">
+            <summary>
+            Goldenrod color (R:218,G:165,B:32,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Gray">
+            <summary>
+            Gray color (R:128,G:128,B:128,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Green">
+            <summary>
+            Green color (R:0,G:128,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.GreenYellow">
+            <summary>
+            GreenYellow color (R:173,G:255,B:47,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Honeydew">
+            <summary>
+            Honeydew color (R:240,G:255,B:240,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.HotPink">
+            <summary>
+            HotPink color (R:255,G:105,B:180,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.IndianRed">
+            <summary>
+            IndianRed color (R:205,G:92,B:92,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Indigo">
+            <summary>
+            Indigo color (R:75,G:0,B:130,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Ivory">
+            <summary>
+            Ivory color (R:255,G:255,B:240,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Khaki">
+            <summary>
+            Khaki color (R:240,G:230,B:140,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Lavender">
+            <summary>
+            Lavender color (R:230,G:230,B:250,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LavenderBlush">
+            <summary>
+            LavenderBlush color (R:255,G:240,B:245,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LawnGreen">
+            <summary>
+            LawnGreen color (R:124,G:252,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LemonChiffon">
+            <summary>
+            LemonChiffon color (R:255,G:250,B:205,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LightBlue">
+            <summary>
+            LightBlue color (R:173,G:216,B:230,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LightCoral">
+            <summary>
+            LightCoral color (R:240,G:128,B:128,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LightCyan">
+            <summary>
+            LightCyan color (R:224,G:255,B:255,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LightGoldenrodYellow">
+            <summary>
+            LightGoldenrodYellow color (R:250,G:250,B:210,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LightGray">
+            <summary>
+            LightGray color (R:211,G:211,B:211,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LightGreen">
+            <summary>
+            LightGreen color (R:144,G:238,B:144,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LightPink">
+            <summary>
+            LightPink color (R:255,G:182,B:193,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LightSalmon">
+            <summary>
+            LightSalmon color (R:255,G:160,B:122,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LightSeaGreen">
+            <summary>
+            LightSeaGreen color (R:32,G:178,B:170,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LightSkyBlue">
+            <summary>
+            LightSkyBlue color (R:135,G:206,B:250,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LightSlateGray">
+            <summary>
+            LightSlateGray color (R:119,G:136,B:153,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LightSteelBlue">
+            <summary>
+            LightSteelBlue color (R:176,G:196,B:222,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LightYellow">
+            <summary>
+            LightYellow color (R:255,G:255,B:224,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Lime">
+            <summary>
+            Lime color (R:0,G:255,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.LimeGreen">
+            <summary>
+            LimeGreen color (R:50,G:205,B:50,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Linen">
+            <summary>
+            Linen color (R:250,G:240,B:230,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Magenta">
+            <summary>
+            Magenta color (R:255,G:0,B:255,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Maroon">
+            <summary>
+            Maroon color (R:128,G:0,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.MediumAquamarine">
+            <summary>
+            MediumAquamarine color (R:102,G:205,B:170,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.MediumBlue">
+            <summary>
+            MediumBlue color (R:0,G:0,B:205,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.MediumOrchid">
+            <summary>
+            MediumOrchid color (R:186,G:85,B:211,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.MediumPurple">
+            <summary>
+            MediumPurple color (R:147,G:112,B:219,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.MediumSeaGreen">
+            <summary>
+            MediumSeaGreen color (R:60,G:179,B:113,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.MediumSlateBlue">
+            <summary>
+            MediumSlateBlue color (R:123,G:104,B:238,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.MediumSpringGreen">
+            <summary>
+            MediumSpringGreen color (R:0,G:250,B:154,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.MediumTurquoise">
+            <summary>
+            MediumTurquoise color (R:72,G:209,B:204,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.MediumVioletRed">
+            <summary>
+            MediumVioletRed color (R:199,G:21,B:133,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.MidnightBlue">
+            <summary>
+            MidnightBlue color (R:25,G:25,B:112,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.MintCream">
+            <summary>
+            MintCream color (R:245,G:255,B:250,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.MistyRose">
+            <summary>
+            MistyRose color (R:255,G:228,B:225,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Moccasin">
+            <summary>
+            Moccasin color (R:255,G:228,B:181,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.MonoGameOrange">
+            <summary>
+            MonoGame orange theme color (R:231,G:60,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.NavajoWhite">
+            <summary>
+            NavajoWhite color (R:255,G:222,B:173,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Navy">
+            <summary>
+            Navy color (R:0,G:0,B:128,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.OldLace">
+            <summary>
+            OldLace color (R:253,G:245,B:230,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Olive">
+            <summary>
+            Olive color (R:128,G:128,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.OliveDrab">
+            <summary>
+            OliveDrab color (R:107,G:142,B:35,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Orange">
+            <summary>
+            Orange color (R:255,G:165,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.OrangeRed">
+            <summary>
+            OrangeRed color (R:255,G:69,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Orchid">
+            <summary>
+            Orchid color (R:218,G:112,B:214,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.PaleGoldenrod">
+            <summary>
+            PaleGoldenrod color (R:238,G:232,B:170,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.PaleGreen">
+            <summary>
+            PaleGreen color (R:152,G:251,B:152,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.PaleTurquoise">
+            <summary>
+            PaleTurquoise color (R:175,G:238,B:238,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.PaleVioletRed">
+            <summary>
+            PaleVioletRed color (R:219,G:112,B:147,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.PapayaWhip">
+            <summary>
+            PapayaWhip color (R:255,G:239,B:213,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.PeachPuff">
+            <summary>
+            PeachPuff color (R:255,G:218,B:185,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Peru">
+            <summary>
+            Peru color (R:205,G:133,B:63,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Pink">
+            <summary>
+            Pink color (R:255,G:192,B:203,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Plum">
+            <summary>
+            Plum color (R:221,G:160,B:221,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.PowderBlue">
+            <summary>
+            PowderBlue color (R:176,G:224,B:230,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Purple">
+            <summary>
+             Purple color (R:128,G:0,B:128,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Red">
+            <summary>
+            Red color (R:255,G:0,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.RosyBrown">
+            <summary>
+            RosyBrown color (R:188,G:143,B:143,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.RoyalBlue">
+            <summary>
+            RoyalBlue color (R:65,G:105,B:225,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.SaddleBrown">
+            <summary>
+            SaddleBrown color (R:139,G:69,B:19,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Salmon">
+            <summary>
+            Salmon color (R:250,G:128,B:114,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.SandyBrown">
+            <summary>
+            SandyBrown color (R:244,G:164,B:96,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.SeaGreen">
+            <summary>
+            SeaGreen color (R:46,G:139,B:87,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.SeaShell">
+            <summary>
+            SeaShell color (R:255,G:245,B:238,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Sienna">
+            <summary>
+            Sienna color (R:160,G:82,B:45,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Silver">
+            <summary>
+            Silver color (R:192,G:192,B:192,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.SkyBlue">
+            <summary>
+            SkyBlue color (R:135,G:206,B:235,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.SlateBlue">
+            <summary>
+            SlateBlue color (R:106,G:90,B:205,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.SlateGray">
+            <summary>
+            SlateGray color (R:112,G:128,B:144,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Snow">
+            <summary>
+            Snow color (R:255,G:250,B:250,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.SpringGreen">
+            <summary>
+            SpringGreen color (R:0,G:255,B:127,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.SteelBlue">
+            <summary>
+            SteelBlue color (R:70,G:130,B:180,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Tan">
+            <summary>
+            Tan color (R:210,G:180,B:140,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Teal">
+            <summary>
+            Teal color (R:0,G:128,B:128,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Thistle">
+            <summary>
+            Thistle color (R:216,G:191,B:216,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Tomato">
+            <summary>
+            Tomato color (R:255,G:99,B:71,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Turquoise">
+            <summary>
+            Turquoise color (R:64,G:224,B:208,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Violet">
+            <summary>
+            Violet color (R:238,G:130,B:238,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Wheat">
+            <summary>
+            Wheat color (R:245,G:222,B:179,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.White">
+            <summary>
+            White color (R:255,G:255,B:255,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.WhiteSmoke">
+            <summary>
+            WhiteSmoke color (R:245,G:245,B:245,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.Yellow">
+            <summary>
+            Yellow color (R:255,G:255,B:0,A:255).
+            </summary>
+        </member>
+        <member name="P:Vessel.Color.YellowGreen">
+            <summary>
+            YellowGreen color (R:154,G:205,B:50,A:255).
+            </summary>
+        </member>
+        <member name="T:Vessel.ContainmentType">
+            <summary>
+            Defines how the bounding volumes intersects or contain one another.
+            </summary>
+        </member>
+        <member name="F:Vessel.ContainmentType.Disjoint">
+            <summary>
+            Indicates that there is no overlap between two bounding volumes.
+            </summary>
+        </member>
+        <member name="F:Vessel.ContainmentType.Contains">
+            <summary>
+            Indicates that one bounding volume completely contains another volume.
+            </summary>
+        </member>
+        <member name="F:Vessel.ContainmentType.Intersects">
+            <summary>
+            Indicates that bounding volumes partially overlap one another.
+            </summary>
+        </member>
+        <member name="M:Vessel.PlaneHelper.ClassifyPoint(System.Numerics.Vector3@,Vessel.Plane@)">
+            <summary>
+            Returns a value indicating what side (positive/negative) of a plane a point is
+            </summary>
+            <param name="point">The point to check with</param>
+            <param name="plane">The plane to check against</param>
+            <returns>Greater than zero if on the positive side, less than zero if on the negative size, 0 otherwise</returns>
+        </member>
+        <member name="M:Vessel.PlaneHelper.PerpendicularDistance(System.Numerics.Vector3@,Vessel.Plane@)">
+            <summary>
+            Returns the perpendicular distance from a point to a plane
+            </summary>
+            <param name="point">The point to check</param>
+            <param name="plane">The place to check</param>
+            <returns>The perpendicular distance from the point to the plane</returns>
+        </member>
+        <member name="T:Vessel.Plane">
+            <summary>
+            A plane in 3d space, represented by its normal away from the origin and its distance from the origin, D.
+            </summary>
+        </member>
+        <member name="F:Vessel.Plane.D">
+            <summary>
+            The distance of the <see cref="T:Vessel.Plane"/> to the origin.
+            </summary>
+        </member>
+        <member name="F:Vessel.Plane.Normal">
+            <summary>
+            The normal of the <see cref="T:Vessel.Plane"/>.
+            </summary>
+        </member>
+        <member name="M:Vessel.Plane.#ctor(System.Numerics.Vector4)">
+            <summary>
+            Create a <see cref="T:Vessel.Plane"/> with the first three components of the specified <see cref="T:System.Numerics.Vector4"/>
+            as the normal and the last component as the distance to the origin.
+            </summary>
+            <param name="value">A vector holding the normal and distance to origin.</param>
+        </member>
+        <member name="M:Vessel.Plane.#ctor(System.Numerics.Vector3,System.Single)">
+            <summary>
+            Create a <see cref="T:Vessel.Plane"/> with the specified normal and distance to the origin.
+            </summary>
+            <param name="normal">The normal of the plane.</param>
+            <param name="d">The distance to the origin.</param>
+        </member>
+        <member name="M:Vessel.Plane.#ctor(System.Numerics.Vector3,System.Numerics.Vector3,System.Numerics.Vector3)">
+            <summary>
+            Create the <see cref="T:Vessel.Plane"/> that contains the three specified points.
+            </summary>
+            <param name="a">A point the created <see cref="T:Vessel.Plane"/> should contain.</param>
+            <param name="b">A point the created <see cref="T:Vessel.Plane"/> should contain.</param>
+            <param name="c">A point the created <see cref="T:Vessel.Plane"/> should contain.</param>
+        </member>
+        <member name="M:Vessel.Plane.#ctor(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Create a <see cref="T:Vessel.Plane"/> with the first three values as the X, Y and Z
+            components of the normal and the last value as the distance to the origin.
+            </summary>
+            <param name="a">The X component of the normal.</param>
+            <param name="b">The Y component of the normal.</param>
+            <param name="c">The Z component of the normal.</param>
+            <param name="d">The distance to the origin.</param>
+        </member>
+        <member name="M:Vessel.Plane.#ctor(System.Numerics.Vector3,System.Numerics.Vector3)">
+            <summary>
+            Create a <see cref="T:Vessel.Plane"/> that contains the specified point and has the specified <see cref="F:Vessel.Plane.Normal"/> vector.
+            </summary>
+            <param name="pointOnPlane">A point the created <see cref="T:Vessel.Plane"/> should contain.</param>
+            <param name="normal">The normal of the plane.</param>
+        </member>
+        <member name="M:Vessel.Plane.Dot(System.Numerics.Vector4)">
+            <summary>
+            Get the dot product of a <see cref="T:System.Numerics.Vector4"/> with this <see cref="T:Vessel.Plane"/>.
+            </summary>
+            <param name="value">The <see cref="T:System.Numerics.Vector4"/> to calculate the dot product with.</param>
+            <returns>The dot product of the specified <see cref="T:System.Numerics.Vector4"/> and this <see cref="T:Vessel.Plane"/>.</returns>
+        </member>
+        <member name="M:Vessel.Plane.Dot(System.Numerics.Vector4@,System.Single@)">
+            <summary>
+            Get the dot product of a <see cref="T:System.Numerics.Vector4"/> with this <see cref="T:Vessel.Plane"/>.
+            </summary>
+            <param name="value">The <see cref="T:System.Numerics.Vector4"/> to calculate the dot product with.</param>
+            <param name="result">
+            The dot product of the specified <see cref="T:System.Numerics.Vector4"/> and this <see cref="T:Vessel.Plane"/>.
+            </param>
+        </member>
+        <member name="M:Vessel.Plane.DotCoordinate(System.Numerics.Vector3)">
+            <summary>
+            Get the dot product of a <see cref="T:System.Numerics.Vector3"/> with
+            the <see cref="F:Vessel.Plane.Normal"/> vector of this <see cref="T:Vessel.Plane"/>
+            plus the <see cref="F:Vessel.Plane.D"/> value of this <see cref="T:Vessel.Plane"/>.
+            </summary>
+            <param name="value">The <see cref="T:System.Numerics.Vector3"/> to calculate the dot product with.</param>
+            <returns>
+            The dot product of the specified <see cref="T:System.Numerics.Vector3"/> and the normal of this <see cref="T:Vessel.Plane"/>
+            plus the <see cref="F:Vessel.Plane.D"/> value of this <see cref="T:Vessel.Plane"/>.
+            </returns>
+        </member>
+        <member name="M:Vessel.Plane.DotCoordinate(System.Numerics.Vector3@,System.Single@)">
+            <summary>
+            Get the dot product of a <see cref="T:System.Numerics.Vector3"/> with
+            the <see cref="F:Vessel.Plane.Normal"/> vector of this <see cref="T:Vessel.Plane"/>
+            plus the <see cref="F:Vessel.Plane.D"/> value of this <see cref="T:Vessel.Plane"/>.
+            </summary>
+            <param name="value">The <see cref="T:System.Numerics.Vector3"/> to calculate the dot product with.</param>
+            <param name="result">
+            The dot product of the specified <see cref="T:System.Numerics.Vector3"/> and the normal of this <see cref="T:Vessel.Plane"/>
+            plus the <see cref="F:Vessel.Plane.D"/> value of this <see cref="T:Vessel.Plane"/>.
+            </param>
+        </member>
+        <member name="M:Vessel.Plane.DotNormal(System.Numerics.Vector3)">
+            <summary>
+            Get the dot product of a <see cref="T:System.Numerics.Vector3"/> with
+            the <see cref="F:Vessel.Plane.Normal"/> vector of this <see cref="T:Vessel.Plane"/>.
+            </summary>
+            <param name="value">The <see cref="T:System.Numerics.Vector3"/> to calculate the dot product with.</param>
+            <returns>
+            The dot product of the specified <see cref="T:System.Numerics.Vector3"/> and the normal of this <see cref="T:Vessel.Plane"/>.
+            </returns>
+        </member>
+        <member name="M:Vessel.Plane.DotNormal(System.Numerics.Vector3@,System.Single@)">
+            <summary>
+            Get the dot product of a <see cref="T:System.Numerics.Vector3"/> with
+            the <see cref="F:Vessel.Plane.Normal"/> vector of this <see cref="T:Vessel.Plane"/>.
+            </summary>
+            <param name="value">The <see cref="T:System.Numerics.Vector3"/> to calculate the dot product with.</param>
+            <param name="result">
+            The dot product of the specified <see cref="T:System.Numerics.Vector3"/> and the normal of this <see cref="T:Vessel.Plane"/>.
+            </param>
+        </member>
+        <member name="M:Vessel.Plane.Transform(Vessel.Plane,System.Numerics.Matrix4x4)">
+            <summary>
+            Transforms a normalized plane by a matrix.
+            </summary>
+            <param name="plane">The normalized plane to transform.</param>
+            <param name="matrix">The transformation matrix.</param>
+            <returns>The transformed plane.</returns>
+        </member>
+        <member name="M:Vessel.Plane.Transform(Vessel.Plane@,System.Numerics.Matrix4x4@,Vessel.Plane@)">
+            <summary>
+            Transforms a normalized plane by a matrix.
+            </summary>
+            <param name="plane">The normalized plane to transform.</param>
+            <param name="matrix">The transformation matrix.</param>
+            <param name="result">The transformed plane.</param>
+        </member>
+        <member name="M:Vessel.Plane.Transform(Vessel.Plane,System.Numerics.Quaternion)">
+            <summary>
+            Transforms a normalized plane by a quaternion rotation.
+            </summary>
+            <param name="plane">The normalized plane to transform.</param>
+            <param name="rotation">The quaternion rotation.</param>
+            <returns>The transformed plane.</returns>
+        </member>
+        <member name="M:Vessel.Plane.Transform(Vessel.Plane@,System.Numerics.Quaternion@,Vessel.Plane@)">
+            <summary>
+            Transforms a normalized plane by a quaternion rotation.
+            </summary>
+            <param name="plane">The normalized plane to transform.</param>
+            <param name="rotation">The quaternion rotation.</param>
+            <param name="result">The transformed plane.</param>
+        </member>
+        <member name="M:Vessel.Plane.Normalize">
+            <summary>
+            Normalize the normal vector of this plane.
+            </summary>
+        </member>
+        <member name="M:Vessel.Plane.Normalize(Vessel.Plane)">
+            <summary>
+            Get a normalized version of the specified plane.
+            </summary>
+            <param name="value">The <see cref="T:Vessel.Plane"/> to normalize.</param>
+            <returns>A normalized version of the specified <see cref="T:Vessel.Plane"/>.</returns>
+        </member>
+        <member name="M:Vessel.Plane.Normalize(Vessel.Plane@,Vessel.Plane@)">
+            <summary>
+            Get a normalized version of the specified plane.
+            </summary>
+            <param name="value">The <see cref="T:Vessel.Plane"/> to normalize.</param>
+            <param name="result">A normalized version of the specified <see cref="T:Vessel.Plane"/>.</param>
+        </member>
+        <member name="M:Vessel.Plane.op_Inequality(Vessel.Plane,Vessel.Plane)">
+            <summary>
+            Check if two planes are not equal.
+            </summary>
+            <param name="plane1">A <see cref="T:Vessel.Plane"/> to check for inequality.</param>
+            <param name="plane2">A <see cref="T:Vessel.Plane"/> to check for inequality.</param>
+            <returns><code>true</code> if the two planes are not equal, <code>false</code> if they are.</returns>
+        </member>
+        <member name="M:Vessel.Plane.op_Equality(Vessel.Plane,Vessel.Plane)">
+            <summary>
+            Check if two planes are equal.
+            </summary>
+            <param name="plane1">A <see cref="T:Vessel.Plane"/> to check for equality.</param>
+            <param name="plane2">A <see cref="T:Vessel.Plane"/> to check for equality.</param>
+            <returns><code>true</code> if the two planes are equal, <code>false</code> if they are not.</returns>
+        </member>
+        <member name="M:Vessel.Plane.Equals(System.Object)">
+            <summary>
+            Check if this <see cref="T:Vessel.Plane"/> is equal to another <see cref="T:Vessel.Plane"/>.
+            </summary>
+            <param name="other">An <see cref="T:System.Object"/> to check for equality with this <see cref="T:Vessel.Plane"/>.</param>
+            <returns>
+            <code>true</code> if the specified <see cref="T:System.Object"/> is equal to this <see cref="T:Vessel.Plane"/>,
+            <code>false</code> if it is not.
+            </returns>
+        </member>
+        <member name="M:Vessel.Plane.Equals(Vessel.Plane)">
+            <summary>
+            Check if this <see cref="T:Vessel.Plane"/> is equal to another <see cref="T:Vessel.Plane"/>.
+            </summary>
+            <param name="other">A <see cref="T:Vessel.Plane"/> to check for equality with this <see cref="T:Vessel.Plane"/>.</param>
+            <returns>
+            <code>true</code> if the specified <see cref="T:Vessel.Plane"/> is equal to this one,
+            <code>false</code> if it is not.
+            </returns>
+        </member>
+        <member name="M:Vessel.Plane.GetHashCode">
+            <summary>
+            Get a hash code for this <see cref="T:Vessel.Plane"/>.
+            </summary>
+            <returns>A hash code for this <see cref="T:Vessel.Plane"/>.</returns>
+        </member>
+        <member name="M:Vessel.Plane.Intersects(Vessel.BoundingBox)">
+            <summary>
+            Check if this <see cref="T:Vessel.Plane"/> intersects a <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <param name="box">The <see cref="T:Vessel.BoundingBox"/> to test for intersection.</param>
+            <returns>
+            The type of intersection of this <see cref="T:Vessel.Plane"/> with the specified <see cref="T:Vessel.BoundingBox"/>.
+            </returns>
+        </member>
+        <member name="M:Vessel.Plane.Intersects(Vessel.BoundingBox@,Vessel.PlaneIntersectionType@)">
+            <summary>
+            Check if this <see cref="T:Vessel.Plane"/> intersects a <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <param name="box">The <see cref="T:Vessel.BoundingBox"/> to test for intersection.</param>
+            <param name="result">
+            The type of intersection of this <see cref="T:Vessel.Plane"/> with the specified <see cref="T:Vessel.BoundingBox"/>.
+            </param>
+        </member>
+        <member name="M:Vessel.Plane.Intersects(Vessel.BoundingFrustum)">
+            <summary>
+            Check if this <see cref="T:Vessel.Plane"/> intersects a <see cref="T:Vessel.BoundingFrustum"/>.
+            </summary>
+            <param name="frustum">The <see cref="T:Vessel.BoundingFrustum"/> to test for intersection.</param>
+            <returns>
+            The type of intersection of this <see cref="T:Vessel.Plane"/> with the specified <see cref="T:Vessel.BoundingFrustum"/>.
+            </returns>
+        </member>
+        <member name="M:Vessel.Plane.Intersects(Vessel.BoundingSphere)">
+            <summary>
+            Check if this <see cref="T:Vessel.Plane"/> intersects a <see cref="T:Vessel.BoundingSphere"/>.
+            </summary>
+            <param name="sphere">The <see cref="T:Vessel.BoundingSphere"/> to test for intersection.</param>
+            <returns>
+            The type of intersection of this <see cref="T:Vessel.Plane"/> with the specified <see cref="T:Vessel.BoundingSphere"/>.
+            </returns>
+        </member>
+        <member name="M:Vessel.Plane.Intersects(Vessel.BoundingSphere@,Vessel.PlaneIntersectionType@)">
+            <summary>
+            Check if this <see cref="T:Vessel.Plane"/> intersects a <see cref="T:Vessel.BoundingSphere"/>.
+            </summary>
+            <param name="sphere">The <see cref="T:Vessel.BoundingSphere"/> to test for intersection.</param>
+            <param name="result">
+            The type of intersection of this <see cref="T:Vessel.Plane"/> with the specified <see cref="T:Vessel.BoundingSphere"/>.
+            </param>
+        </member>
+        <member name="M:Vessel.Plane.ToString">
+            <summary>
+            Get a <see cref="T:System.String"/> representation of this <see cref="T:Vessel.Plane"/>.
+            </summary>
+            <returns>A <see cref="T:System.String"/> representation of this <see cref="T:Vessel.Plane"/>.</returns>
+        </member>
+        <member name="M:Vessel.Plane.Deconstruct(System.Numerics.Vector3@,System.Single@)">
+            <summary>
+            Deconstruction method for <see cref="T:Vessel.Plane"/>.
+            </summary>
+            <param name="normal"></param>
+            <param name="d"></param>
+        </member>
+        <member name="T:Vessel.PlaneIntersectionType">
+            <summary>
+            Defines the intersection between a <see cref="T:Vessel.Plane"/> and a bounding volume.
+            </summary>
+        </member>
+        <member name="F:Vessel.PlaneIntersectionType.Front">
+            <summary>
+            There is no intersection, the bounding volume is in the negative half space of the plane.
+            </summary>
+        </member>
+        <member name="F:Vessel.PlaneIntersectionType.Back">
+            <summary>
+            There is no intersection, the bounding volume is in the positive half space of the plane.
+            </summary>
+        </member>
+        <member name="F:Vessel.PlaneIntersectionType.Intersecting">
+            <summary>
+            The plane is intersected.
+            </summary>
+        </member>
+        <member name="T:Vessel.Point">
+            <summary>
+            Describes a 2D-point.
+            </summary>
+        </member>
+        <member name="F:Vessel.Point.X">
+            <summary>
+            The x coordinate of this <see cref="T:Vessel.Point"/>.
+            </summary>
+        </member>
+        <member name="F:Vessel.Point.Y">
+            <summary>
+            The y coordinate of this <see cref="T:Vessel.Point"/>.
+            </summary>
+        </member>
+        <member name="P:Vessel.Point.Zero">
+            <summary>
+            Returns a <see cref="T:Vessel.Point"/> with coordinates 0, 0.
+            </summary>
+        </member>
+        <member name="M:Vessel.Point.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Constructs a point with X and Y from two values.
+            </summary>
+            <param name="x">The x coordinate in 2d-space.</param>
+            <param name="y">The y coordinate in 2d-space.</param>
+        </member>
+        <member name="M:Vessel.Point.#ctor(System.Int32)">
+            <summary>
+            Constructs a point with X and Y set to the same value.
+            </summary>
+            <param name="value">The x and y coordinates in 2d-space.</param>
+        </member>
+        <member name="M:Vessel.Point.op_Addition(Vessel.Point,Vessel.Point)">
+            <summary>
+            Adds two points.
+            </summary>
+            <param name="value1">Source <see cref="T:Vessel.Point"/> on the left of the add sign.</param>
+            <param name="value2">Source <see cref="T:Vessel.Point"/> on the right of the add sign.</param>
+            <returns>Sum of the points.</returns>
+        </member>
+        <member name="M:Vessel.Point.op_Subtraction(Vessel.Point,Vessel.Point)">
+            <summary>
+            Subtracts a <see cref="T:Vessel.Point"/> from a <see cref="T:Vessel.Point"/>.
+            </summary>
+            <param name="value1">Source <see cref="T:Vessel.Point"/> on the left of the sub sign.</param>
+            <param name="value2">Source <see cref="T:Vessel.Point"/> on the right of the sub sign.</param>
+            <returns>Result of the subtraction.</returns>
+        </member>
+        <member name="M:Vessel.Point.op_Multiply(Vessel.Point,Vessel.Point)">
+            <summary>
+            Multiplies the components of two points by each other.
+            </summary>
+            <param name="value1">Source <see cref="T:Vessel.Point"/> on the left of the mul sign.</param>
+            <param name="value2">Source <see cref="T:Vessel.Point"/> on the right of the mul sign.</param>
+            <returns>Result of the multiplication.</returns>
+        </member>
+        <member name="M:Vessel.Point.op_Division(Vessel.Point,Vessel.Point)">
+            <summary>
+            Divides the components of a <see cref="T:Vessel.Point"/> by the components of another <see cref="T:Vessel.Point"/>.
+            </summary>
+            <param name="source">Source <see cref="T:Vessel.Point"/> on the left of the div sign.</param>
+            <param name="divisor">Divisor <see cref="T:Vessel.Point"/> on the right of the div sign.</param>
+            <returns>The result of dividing the points.</returns>
+        </member>
+        <member name="M:Vessel.Point.op_Equality(Vessel.Point,Vessel.Point)">
+            <summary>
+            Compares whether two <see cref="T:Vessel.Point"/> instances are equal.
+            </summary>
+            <param name="a"><see cref="T:Vessel.Point"/> instance on the left of the equal sign.</param>
+            <param name="b"><see cref="T:Vessel.Point"/> instance on the right of the equal sign.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Point.op_Inequality(Vessel.Point,Vessel.Point)">
+            <summary>
+            Compares whether two <see cref="T:Vessel.Point"/> instances are not equal.
+            </summary>
+            <param name="a"><see cref="T:Vessel.Point"/> instance on the left of the not equal sign.</param>
+            <param name="b"><see cref="T:Vessel.Point"/> instance on the right of the not equal sign.</param>
+            <returns><c>true</c> if the instances are not equal; <c>false</c> otherwise.</returns>	
+        </member>
+        <member name="M:Vessel.Point.Equals(System.Object)">
+            <summary>
+            Compares whether current instance is equal to specified <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Point.Equals(Vessel.Point)">
+            <summary>
+            Compares whether current instance is equal to specified <see cref="T:Vessel.Point"/>.
+            </summary>
+            <param name="other">The <see cref="T:Vessel.Point"/> to compare.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Point.GetHashCode">
+            <summary>
+            Gets the hash code of this <see cref="T:Vessel.Point"/>.
+            </summary>
+            <returns>Hash code of this <see cref="T:Vessel.Point"/>.</returns>
+        </member>
+        <member name="M:Vessel.Point.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> representation of this <see cref="T:Vessel.Point"/> in the format:
+            {X:[<see cref="F:Vessel.Point.X"/>] Y:[<see cref="F:Vessel.Point.Y"/>]}
+            </summary>
+            <returns><see cref="T:System.String"/> representation of this <see cref="T:Vessel.Point"/>.</returns>
+        </member>
+        <member name="M:Vessel.Point.ToVector2">
+            <summary>
+            Gets a <see cref="T:System.Numerics.Vector2"/> representation for this object.
+            </summary>
+            <returns>A <see cref="T:System.Numerics.Vector2"/> representation for this object.</returns>
+        </member>
+        <member name="M:Vessel.Point.Deconstruct(System.Int32@,System.Int32@)">
+            <summary>
+            Deconstruction method for <see cref="T:Vessel.Point"/>.
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+        </member>
+        <member name="T:Vessel.Ray">
+            <summary>
+            Represents a ray with an origin and a direction in 3D space.
+            </summary>
+        </member>
+        <member name="F:Vessel.Ray.Direction">
+            <summary>
+            The direction of this <see cref="T:Vessel.Ray"/>.
+            </summary>
+        </member>
+        <member name="F:Vessel.Ray.Position">
+            <summary>
+            The origin of this <see cref="T:Vessel.Ray"/>.
+            </summary>
+        </member>
+        <member name="M:Vessel.Ray.#ctor(System.Numerics.Vector3,System.Numerics.Vector3)">
+            <summary>
+            Create a <see cref="T:Vessel.Ray"/>.
+            </summary>
+            <param name="position">The origin of the <see cref="T:Vessel.Ray"/>.</param>
+            <param name="direction">The direction of the <see cref="T:Vessel.Ray"/>.</param>
+        </member>
+        <member name="M:Vessel.Ray.Equals(System.Object)">
+            <summary>
+            Check if the specified <see cref="T:System.Object"/> is equal to this <see cref="T:Vessel.Ray"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to test for equality with this <see cref="T:Vessel.Ray"/>.</param>
+            <returns>
+            <code>true</code> if the specified <see cref="T:System.Object"/> is equal to this <see cref="T:Vessel.Ray"/>,
+            <code>false</code> if it is not.
+            </returns>
+        </member>
+        <member name="M:Vessel.Ray.Equals(Vessel.Ray)">
+            <summary>
+            Check if the specified <see cref="T:Vessel.Ray"/> is equal to this <see cref="T:Vessel.Ray"/>.
+            </summary>
+            <param name="other">The <see cref="T:Vessel.Ray"/> to test for equality with this <see cref="T:Vessel.Ray"/>.</param>
+            <returns>
+            <code>true</code> if the specified <see cref="T:Vessel.Ray"/> is equal to this <see cref="T:Vessel.Ray"/>,
+            <code>false</code> if it is not.
+            </returns>
+        </member>
+        <member name="M:Vessel.Ray.GetHashCode">
+            <summary>
+            Get a hash code for this <see cref="T:Vessel.Ray"/>.
+            </summary>
+            <returns>A hash code for this <see cref="T:Vessel.Ray"/>.</returns>
+        </member>
+        <member name="M:Vessel.Ray.Intersects(Vessel.BoundingBox)">
+            <summary>
+            Check if this <see cref="T:Vessel.Ray"/> intersects the specified <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <param name="box">The <see cref="T:Vessel.BoundingBox"/> to test for intersection.</param>
+            <returns>
+            The distance along the ray of the intersection or <code>null</code> if this
+            <see cref="T:Vessel.Ray"/> does not intersect the <see cref="T:Vessel.BoundingBox"/>.
+            </returns>
+        </member>
+        <member name="M:Vessel.Ray.Intersects(Vessel.BoundingBox@,System.Nullable{System.Single}@)">
+            <summary>
+            Check if this <see cref="T:Vessel.Ray"/> intersects the specified <see cref="T:Vessel.BoundingBox"/>.
+            </summary>
+            <param name="box">The <see cref="T:Vessel.BoundingBox"/> to test for intersection.</param>
+            <param name="result">
+            The distance along the ray of the intersection or <code>null</code> if this
+            <see cref="T:Vessel.Ray"/> does not intersect the <see cref="T:Vessel.BoundingBox"/>.
+            </param>
+        </member>
+        <member name="M:Vessel.Ray.Intersects(Vessel.BoundingSphere)">
+            <summary>
+            Check if this <see cref="T:Vessel.Ray"/> intersects the specified <see cref="T:Vessel.BoundingSphere"/>.
+            </summary>
+            <param name="sphere">The <see cref="T:Vessel.BoundingBox"/> to test for intersection.</param>
+            <returns>
+            The distance along the ray of the intersection or <code>null</code> if this
+            <see cref="T:Vessel.Ray"/> does not intersect the <see cref="T:Vessel.BoundingSphere"/>.
+            </returns>
+        </member>
+        <member name="M:Vessel.Ray.Intersects(Vessel.Plane)">
+            <summary>
+            Check if this <see cref="T:Vessel.Ray"/> intersects the specified <see cref="T:Vessel.Plane"/>.
+            </summary>
+            <param name="plane">The <see cref="T:Vessel.Plane"/> to test for intersection.</param>
+            <returns>
+            The distance along the ray of the intersection or <code>null</code> if this
+            <see cref="T:Vessel.Ray"/> does not intersect the <see cref="T:Vessel.Plane"/>.
+            </returns>
+        </member>
+        <member name="M:Vessel.Ray.Intersects(Vessel.Plane@,System.Nullable{System.Single}@)">
+            <summary>
+            Check if this <see cref="T:Vessel.Ray"/> intersects the specified <see cref="T:Vessel.Plane"/>.
+            </summary>
+            <param name="plane">The <see cref="T:Vessel.Plane"/> to test for intersection.</param>
+            <param name="result">
+            The distance along the ray of the intersection or <code>null</code> if this
+            <see cref="T:Vessel.Ray"/> does not intersect the <see cref="T:Vessel.Plane"/>.
+            </param>
+        </member>
+        <member name="M:Vessel.Ray.Intersects(Vessel.BoundingSphere@,System.Nullable{System.Single}@)">
+            <summary>
+            Check if this <see cref="T:Vessel.Ray"/> intersects the specified <see cref="T:Vessel.BoundingSphere"/>.
+            </summary>
+            <param name="sphere">The <see cref="T:Vessel.BoundingBox"/> to test for intersection.</param>
+            <param name="result">
+            The distance along the ray of the intersection or <code>null</code> if this
+            <see cref="T:Vessel.Ray"/> does not intersect the <see cref="T:Vessel.BoundingSphere"/>.
+            </param>
+        </member>
+        <member name="M:Vessel.Ray.op_Inequality(Vessel.Ray,Vessel.Ray)">
+            <summary>
+            Check if two rays are not equal.
+            </summary>
+            <param name="a">A ray to check for inequality.</param>
+            <param name="b">A ray to check for inequality.</param>
+            <returns><code>true</code> if the two rays are not equal, <code>false</code> if they are.</returns>
+        </member>
+        <member name="M:Vessel.Ray.op_Equality(Vessel.Ray,Vessel.Ray)">
+            <summary>
+            Check if two rays are equal.
+            </summary>
+            <param name="a">A ray to check for equality.</param>
+            <param name="b">A ray to check for equality.</param>
+            <returns><code>true</code> if the two rays are equals, <code>false</code> if they are not.</returns>
+        </member>
+        <member name="M:Vessel.Ray.ToString">
+            <summary>
+            Get a <see cref="T:System.String"/> representation of this <see cref="T:Vessel.Ray"/>.
+            </summary>
+            <returns>A <see cref="T:System.String"/> representation of this <see cref="T:Vessel.Ray"/>.</returns>
+        </member>
+        <member name="M:Vessel.Ray.Deconstruct(System.Numerics.Vector3@,System.Numerics.Vector3@)">
+            <summary>
+            Deconstruction method for <see cref="T:Vessel.Ray"/>.
+            </summary>
+            <param name="position">Receives the start position of the ray.</param>
+            <param name="direction">Receives the direction of the ray.</param>
+        </member>
+        <member name="T:Vessel.Rectangle">
+            <summary>
+            Describes a 2D-rectangle. 
+            </summary>
+        </member>
+        <member name="F:Vessel.Rectangle.X">
+            <summary>
+            The x coordinate of the top-left corner of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+        </member>
+        <member name="F:Vessel.Rectangle.Y">
+            <summary>
+            The y coordinate of the top-left corner of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+        </member>
+        <member name="F:Vessel.Rectangle.Width">
+            <summary>
+            The width of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+        </member>
+        <member name="F:Vessel.Rectangle.Height">
+            <summary>
+            The height of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+        </member>
+        <member name="P:Vessel.Rectangle.Empty">
+            <summary>
+            Returns a <see cref="T:Vessel.Rectangle"/> with X=0, Y=0, Width=0, Height=0.
+            </summary>
+        </member>
+        <member name="P:Vessel.Rectangle.Left">
+            <summary>
+            Returns the x coordinate of the left edge of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+        </member>
+        <member name="P:Vessel.Rectangle.Right">
+            <summary>
+            Returns the x coordinate of the right edge of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+        </member>
+        <member name="P:Vessel.Rectangle.Top">
+            <summary>
+            Returns the y coordinate of the top edge of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+        </member>
+        <member name="P:Vessel.Rectangle.Bottom">
+            <summary>
+            Returns the y coordinate of the bottom edge of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+        </member>
+        <member name="P:Vessel.Rectangle.IsEmpty">
+            <summary>
+            Whether or not this <see cref="T:Vessel.Rectangle"/> has a <see cref="F:Vessel.Rectangle.Width"/> and
+            <see cref="F:Vessel.Rectangle.Height"/> of 0, and a <see cref="P:Vessel.Rectangle.Location"/> of (0, 0).
+            </summary>
+        </member>
+        <member name="P:Vessel.Rectangle.Location">
+            <summary>
+            The top-left coordinates of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+        </member>
+        <member name="P:Vessel.Rectangle.Size">
+            <summary>
+            The width-height coordinates of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+        </member>
+        <member name="P:Vessel.Rectangle.Center">
+            <summary>
+            A <see cref="T:Vessel.Point"/> located in the center of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <remarks>
+            If <see cref="F:Vessel.Rectangle.Width"/> or <see cref="F:Vessel.Rectangle.Height"/> is an odd number,
+            the center point will be rounded down.
+            </remarks>
+        </member>
+        <member name="M:Vessel.Rectangle.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Creates a new instance of <see cref="T:Vessel.Rectangle"/> struct, with the specified
+            position, width, and height.
+            </summary>
+            <param name="x">The x coordinate of the top-left corner of the created <see cref="T:Vessel.Rectangle"/>.</param>
+            <param name="y">The y coordinate of the top-left corner of the created <see cref="T:Vessel.Rectangle"/>.</param>
+            <param name="width">The width of the created <see cref="T:Vessel.Rectangle"/>.</param>
+            <param name="height">The height of the created <see cref="T:Vessel.Rectangle"/>.</param>
+        </member>
+        <member name="M:Vessel.Rectangle.#ctor(Vessel.Point,Vessel.Point)">
+            <summary>
+            Creates a new instance of <see cref="T:Vessel.Rectangle"/> struct, with the specified
+            location and size.
+            </summary>
+            <param name="location">The x and y coordinates of the top-left corner of the created <see cref="T:Vessel.Rectangle"/>.</param>
+            <param name="size">The width and height of the created <see cref="T:Vessel.Rectangle"/>.</param>
+        </member>
+        <member name="M:Vessel.Rectangle.op_Equality(Vessel.Rectangle,Vessel.Rectangle)">
+            <summary>
+            Compares whether two <see cref="T:Vessel.Rectangle"/> instances are equal.
+            </summary>
+            <param name="a"><see cref="T:Vessel.Rectangle"/> instance on the left of the equal sign.</param>
+            <param name="b"><see cref="T:Vessel.Rectangle"/> instance on the right of the equal sign.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Rectangle.op_Inequality(Vessel.Rectangle,Vessel.Rectangle)">
+            <summary>
+            Compares whether two <see cref="T:Vessel.Rectangle"/> instances are not equal.
+            </summary>
+            <param name="a"><see cref="T:Vessel.Rectangle"/> instance on the left of the not equal sign.</param>
+            <param name="b"><see cref="T:Vessel.Rectangle"/> instance on the right of the not equal sign.</param>
+            <returns><c>true</c> if the instances are not equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Rectangle.Contains(System.Int32,System.Int32)">
+            <summary>
+            Gets whether or not the provided coordinates lie within the bounds of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <param name="x">The x coordinate of the point to check for containment.</param>
+            <param name="y">The y coordinate of the point to check for containment.</param>
+            <returns><c>true</c> if the provided coordinates lie inside this <see cref="T:Vessel.Rectangle"/>; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Rectangle.Contains(System.Single,System.Single)">
+            <summary>
+            Gets whether or not the provided coordinates lie within the bounds of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <param name="x">The x coordinate of the point to check for containment.</param>
+            <param name="y">The y coordinate of the point to check for containment.</param>
+            <returns><c>true</c> if the provided coordinates lie inside this <see cref="T:Vessel.Rectangle"/>; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Rectangle.Contains(Vessel.Point)">
+            <summary>
+            Gets whether or not the provided <see cref="T:Vessel.Point"/> lies within the bounds of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <param name="value">The coordinates to check for inclusion in this <see cref="T:Vessel.Rectangle"/>.</param>
+            <returns><c>true</c> if the provided <see cref="T:Vessel.Point"/> lies inside this <see cref="T:Vessel.Rectangle"/>; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Rectangle.Contains(Vessel.Point@,System.Boolean@)">
+            <summary>
+            Gets whether or not the provided <see cref="T:Vessel.Point"/> lies within the bounds of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <param name="value">The coordinates to check for inclusion in this <see cref="T:Vessel.Rectangle"/>.</param>
+            <param name="result"><c>true</c> if the provided <see cref="T:Vessel.Point"/> lies inside this <see cref="T:Vessel.Rectangle"/>; <c>false</c> otherwise. As an output parameter.</param>
+        </member>
+        <member name="M:Vessel.Rectangle.Contains(System.Numerics.Vector2)">
+            <summary>
+            Gets whether or not the provided <see cref="T:System.Numerics.Vector2"/> lies within the bounds of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <param name="value">The coordinates to check for inclusion in this <see cref="T:Vessel.Rectangle"/>.</param>
+            <returns><c>true</c> if the provided <see cref="T:System.Numerics.Vector2"/> lies inside this <see cref="T:Vessel.Rectangle"/>; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Rectangle.Contains(System.Numerics.Vector2@,System.Boolean@)">
+            <summary>
+            Gets whether or not the provided <see cref="T:System.Numerics.Vector2"/> lies within the bounds of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <param name="value">The coordinates to check for inclusion in this <see cref="T:Vessel.Rectangle"/>.</param>
+            <param name="result"><c>true</c> if the provided <see cref="T:System.Numerics.Vector2"/> lies inside this <see cref="T:Vessel.Rectangle"/>; <c>false</c> otherwise. As an output parameter.</param>
+        </member>
+        <member name="M:Vessel.Rectangle.Contains(Vessel.Rectangle)">
+            <summary>
+            Gets whether or not the provided <see cref="T:Vessel.Rectangle"/> lies within the bounds of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <param name="value">The <see cref="T:Vessel.Rectangle"/> to check for inclusion in this <see cref="T:Vessel.Rectangle"/>.</param>
+            <returns><c>true</c> if the provided <see cref="T:Vessel.Rectangle"/>'s bounds lie entirely inside this <see cref="T:Vessel.Rectangle"/>; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Rectangle.Contains(Vessel.Rectangle@,System.Boolean@)">
+            <summary>
+            Gets whether or not the provided <see cref="T:Vessel.Rectangle"/> lies within the bounds of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <param name="value">The <see cref="T:Vessel.Rectangle"/> to check for inclusion in this <see cref="T:Vessel.Rectangle"/>.</param>
+            <param name="result"><c>true</c> if the provided <see cref="T:Vessel.Rectangle"/>'s bounds lie entirely inside this <see cref="T:Vessel.Rectangle"/>; <c>false</c> otherwise. As an output parameter.</param>
+        </member>
+        <member name="M:Vessel.Rectangle.Equals(System.Object)">
+            <summary>
+            Compares whether current instance is equal to specified <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Rectangle.Equals(Vessel.Rectangle)">
+            <summary>
+            Compares whether current instance is equal to specified <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <param name="other">The <see cref="T:Vessel.Rectangle"/> to compare.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Rectangle.GetHashCode">
+            <summary>
+            Gets the hash code of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <returns>Hash code of this <see cref="T:Vessel.Rectangle"/>.</returns>
+        </member>
+        <member name="M:Vessel.Rectangle.Inflate(System.Int32,System.Int32)">
+            <summary>
+            Adjusts the edges of this <see cref="T:Vessel.Rectangle"/> by specified horizontal and vertical amounts. 
+            </summary>
+            <param name="horizontalAmount">Value to adjust the left and right edges.</param>
+            <param name="verticalAmount">Value to adjust the top and bottom edges.</param>
+        </member>
+        <member name="M:Vessel.Rectangle.Inflate(System.Single,System.Single)">
+            <summary>
+            Adjusts the edges of this <see cref="T:Vessel.Rectangle"/> by specified horizontal and vertical amounts. 
+            </summary>
+            <param name="horizontalAmount">Value to adjust the left and right edges.</param>
+            <param name="verticalAmount">Value to adjust the top and bottom edges.</param>
+        </member>
+        <member name="M:Vessel.Rectangle.Intersects(Vessel.Rectangle)">
+            <summary>
+            Gets whether or not the other <see cref="T:Vessel.Rectangle"/> intersects with this rectangle.
+            </summary>
+            <param name="value">The other rectangle for testing.</param>
+            <returns><c>true</c> if other <see cref="T:Vessel.Rectangle"/> intersects with this rectangle; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Vessel.Rectangle.Intersects(Vessel.Rectangle@,System.Boolean@)">
+            <summary>
+            Gets whether or not the other <see cref="T:Vessel.Rectangle"/> intersects with this rectangle.
+            </summary>
+            <param name="value">The other rectangle for testing.</param>
+            <param name="result"><c>true</c> if other <see cref="T:Vessel.Rectangle"/> intersects with this rectangle; <c>false</c> otherwise. As an output parameter.</param>
+        </member>
+        <member name="M:Vessel.Rectangle.Intersect(Vessel.Rectangle,Vessel.Rectangle)">
+            <summary>
+            Creates a new <see cref="T:Vessel.Rectangle"/> that contains overlapping region of two other rectangles.
+            </summary>
+            <param name="value1">The first <see cref="T:Vessel.Rectangle"/>.</param>
+            <param name="value2">The second <see cref="T:Vessel.Rectangle"/>.</param>
+            <returns>Overlapping region of the two rectangles.</returns>
+        </member>
+        <member name="M:Vessel.Rectangle.Intersect(Vessel.Rectangle@,Vessel.Rectangle@,Vessel.Rectangle@)">
+            <summary>
+            Creates a new <see cref="T:Vessel.Rectangle"/> that contains overlapping region of two other rectangles.
+            </summary>
+            <param name="value1">The first <see cref="T:Vessel.Rectangle"/>.</param>
+            <param name="value2">The second <see cref="T:Vessel.Rectangle"/>.</param>
+            <param name="result">Overlapping region of the two rectangles as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.Rectangle.Offset(System.Int32,System.Int32)">
+            <summary>
+            Changes the <see cref="P:Vessel.Rectangle.Location"/> of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <param name="offsetX">The x coordinate to add to this <see cref="T:Vessel.Rectangle"/>.</param>
+            <param name="offsetY">The y coordinate to add to this <see cref="T:Vessel.Rectangle"/>.</param>
+        </member>
+        <member name="M:Vessel.Rectangle.Offset(System.Single,System.Single)">
+            <summary>
+            Changes the <see cref="P:Vessel.Rectangle.Location"/> of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <param name="offsetX">The x coordinate to add to this <see cref="T:Vessel.Rectangle"/>.</param>
+            <param name="offsetY">The y coordinate to add to this <see cref="T:Vessel.Rectangle"/>.</param>
+        </member>
+        <member name="M:Vessel.Rectangle.Offset(Vessel.Point)">
+            <summary>
+            Changes the <see cref="P:Vessel.Rectangle.Location"/> of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <param name="amount">The x and y components to add to this <see cref="T:Vessel.Rectangle"/>.</param>
+        </member>
+        <member name="M:Vessel.Rectangle.Offset(System.Numerics.Vector2)">
+            <summary>
+            Changes the <see cref="P:Vessel.Rectangle.Location"/> of this <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <param name="amount">The x and y components to add to this <see cref="T:Vessel.Rectangle"/>.</param>
+        </member>
+        <member name="M:Vessel.Rectangle.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> representation of this <see cref="T:Vessel.Rectangle"/> in the format:
+            {X:[<see cref="F:Vessel.Rectangle.X"/>] Y:[<see cref="F:Vessel.Rectangle.Y"/>] Width:[<see cref="F:Vessel.Rectangle.Width"/>] Height:[<see cref="F:Vessel.Rectangle.Height"/>]}
+            </summary>
+            <returns><see cref="T:System.String"/> representation of this <see cref="T:Vessel.Rectangle"/>.</returns>
+        </member>
+        <member name="M:Vessel.Rectangle.Union(Vessel.Rectangle,Vessel.Rectangle)">
+            <summary>
+            Creates a new <see cref="T:Vessel.Rectangle"/> that completely contains two other rectangles.
+            </summary>
+            <param name="value1">The first <see cref="T:Vessel.Rectangle"/>.</param>
+            <param name="value2">The second <see cref="T:Vessel.Rectangle"/>.</param>
+            <returns>The union of the two rectangles.</returns>
+        </member>
+        <member name="M:Vessel.Rectangle.Union(Vessel.Rectangle@,Vessel.Rectangle@,Vessel.Rectangle@)">
+            <summary>
+            Creates a new <see cref="T:Vessel.Rectangle"/> that completely contains two other rectangles.
+            </summary>
+            <param name="value1">The first <see cref="T:Vessel.Rectangle"/>.</param>
+            <param name="value2">The second <see cref="T:Vessel.Rectangle"/>.</param>
+            <param name="result">The union of the two rectangles as an output parameter.</param>
+        </member>
+        <member name="M:Vessel.Rectangle.Deconstruct(System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            Deconstruction method for <see cref="T:Vessel.Rectangle"/>.
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="width"></param>
+            <param name="height"></param>
+        </member>
+        <member name="T:Vessel.ILogger">
+            <summary>
+            The base class for all Loggers that may be attached to Vessel
+            Implement this logger and set it in the <see cref="T:Vessel.VesselEngine"/> constructor to utilise it
+            </summary>
+        </member>
+        <member name="F:Vessel.Mathf.E">
+            <summary>
+            Represents the mathematical constant e(2.71828175).
+            </summary>
+        </member>
+        <member name="F:Vessel.Mathf.Log10E">
+            <summary>
+            Represents the log base ten of e(0.4342945).
+            </summary>
+        </member>
+        <member name="F:Vessel.Mathf.Log2E">
+            <summary>
+            Represents the log base two of e(1.442695).
+            </summary>
+        </member>
+        <member name="F:Vessel.Mathf.Pi">
+            <summary>
+            Represents the value of pi(3.14159274).
+            </summary>
+        </member>
+        <member name="F:Vessel.Mathf.PiOver2">
+            <summary>
+            Represents the value of pi divided by two(1.57079637).
+            </summary>
+        </member>
+        <member name="F:Vessel.Mathf.PiOver4">
+            <summary>
+            Represents the value of pi divided by four(0.7853982).
+            </summary>
+        </member>
+        <member name="F:Vessel.Mathf.TwoPi">
+            <summary>
+            Represents the value of pi times two(6.28318548).
+            </summary>
+        </member>
+        <member name="F:Vessel.Mathf.Tau">
+            <summary>
+            Represents the value of pi times two(6.28318548).
+            This is an alias of TwoPi.
+            </summary>
+        </member>
+        <member name="M:Vessel.Mathf.Max(System.Single,System.Single)">
+            <summary>
+            Returns the greater of two values.
+            </summary>
+            <param name="value1">Source value.</param>
+            <param name="value2">Source value.</param>
+            <returns>The greater value.</returns>
+        </member>
+        <member name="M:Vessel.Mathf.Max(System.Int32,System.Int32)">
+            <summary>
+            Returns the greater of two values.
+            </summary>
+            <param name="value1">Source value.</param>
+            <param name="value2">Source value.</param>
+            <returns>The greater value.</returns>
+        </member>
+        <member name="M:Vessel.Mathf.Min(System.Single,System.Single)">
+            <summary>
+            Returns the lesser of two values.
+            </summary>
+            <param name="value1">Source value.</param>
+            <param name="value2">Source value.</param>
+            <returns>The lesser value.</returns>
+        </member>
+        <member name="M:Vessel.Mathf.Min(System.Int32,System.Int32)">
+            <summary>
+            Returns the lesser of two values.
+            </summary>
+            <param name="value1">Source value.</param>
+            <param name="value2">Source value.</param>
+            <returns>The lesser value.</returns>
+        </member>
+        <member name="M:Vessel.Mathf.Clamp(System.Single,System.Single,System.Single)">
+            <summary>
+            Restricts a value to be within a specified range.
+            </summary>
+            <param name="value">The value to clamp.</param>
+            <param name="min">The minimum value. If <c>value</c> is less than <c>min</c>, <c>min</c> will be returned.</param>
+            <param name="max">The maximum value. If <c>value</c> is greater than <c>max</c>, <c>max</c> will be returned.</param>
+            <returns>The clamped value.</returns>
+        </member>
+        <member name="M:Vessel.Mathf.Clamp(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Restricts a value to be within a specified range.
+            </summary>
+            <param name="value">The value to clamp.</param>
+            <param name="min">The minimum value. If <c>value</c> is less than <c>min</c>, <c>min</c> will be returned.</param>
+            <param name="max">The maximum value. If <c>value</c> is greater than <c>max</c>, <c>max</c> will be returned.</param>
+            <returns>The clamped value.</returns>
+        </member>
+        <member name="M:Vessel.Mathf.Lerp(System.Single,System.Single,System.Single)">
+            <summary>
+            Linearly interpolates between two values.
+            </summary>
+            <param name="value1">Source value.</param>
+            <param name="value2">Destination value.</param>
+            <param name="amount">Value between 0 and 1 indicating the weight of value2.</param>
+            <returns>Interpolated value.</returns> 
+            <remarks>This method performs the linear interpolation based on the following formula:
+            <code>value1 + (value2 - value1) * amount</code>.
+            Passing amount a value of 0 will cause value1 to be returned, a value of 1 will cause value2 to be returned.
+            See <see cref="!:MathHelper.LerpPrecise"/> for a less efficient version with more precision around edge cases.
+            </remarks>
+        </member>
+        <member name="M:Vessel.Mathf.LerpPrecise(System.Single,System.Single,System.Single)">
+            <summary>
+            Linearly interpolates between two values.
+            This method is a less efficient, more precise version of <see cref="M:Vessel.Mathf.Lerp(System.Single,System.Single,System.Single)"/>.
+            See remarks for more info.
+            </summary>
+            <param name="value1">Source value.</param>
+            <param name="value2">Destination value.</param>
+            <param name="amount">Value between 0 and 1 indicating the weight of value2.</param>
+            <returns>Interpolated value.</returns>
+            <remarks>This method performs the linear interpolation based on the following formula:
+            <code>((1 - amount) * value1) + (value2 * amount)</code>.
+            Passing amount a value of 0 will cause value1 to be returned, a value of 1 will cause value2 to be returned.
+            This method does not have the floating point precision issue that <see cref="M:Vessel.Mathf.Lerp(System.Single,System.Single,System.Single)"/> has.
+            i.e. If there is a big gap between value1 and value2 in magnitude (e.g. value1=10000000000000000, value2=1),
+            right at the edge of the interpolation range (amount=1), <see cref="M:Vessel.Mathf.Lerp(System.Single,System.Single,System.Single)"/> will return 0 (whereas it should return 1).
+            This also holds for value1=10^17, value2=10; value1=10^18,value2=10^2... so on.
+            For an in depth explanation of the issue, see below references:
+            Relevant Wikipedia Article: https://en.wikipedia.org/wiki/Linear_interpolation#Programming_language_support
+            Relevant StackOverflow Answer: http://stackoverflow.com/questions/4353525/floating-point-linear-interpolation#answer-23716956
+            </remarks>
+        </member>
+        <member name="M:Vessel.Mathf.SmoothStep(System.Single,System.Single,System.Single)">
+            <summary>
+            Interpolates between two values using a cubic equation.
+            </summary>
+            <param name="value1">Source value.</param>
+            <param name="value2">Source value.</param>
+            <param name="amount">Weighting value.</param>
+            <returns>Interpolated value.</returns>
+        </member>
+        <member name="M:Vessel.Mathf.ToDegrees(System.Single)">
+            <summary>
+            Converts radians to degrees.
+            </summary>
+            <param name="radians">The angle in radians.</param>
+            <returns>The angle in degrees.</returns>
+            <remarks>
+            This method uses double precission internally,
+            though it returns single float
+            Factor = 180 / pi
+            </remarks>
+        </member>
+        <member name="M:Vessel.Mathf.ToRadians(System.Single)">
+            <summary>
+            Converts degrees to radians.
+            </summary>
+            <param name="degrees">The angle in degrees.</param>
+            <returns>The angle in radians.</returns>
+            <remarks>
+            This method uses double precission internally,
+            though it returns single float
+            Factor = pi / 180
+            </remarks>
+        </member>
+        <member name="M:Vessel.Mathf.WrapAngle(System.Single)">
+            <summary>
+            Reduces a given angle to a value between π and -π.
+            </summary>
+            <param name="angle">The angle to reduce, in radians.</param>
+            <returns>The new angle, in radians.</returns>
+        </member>
+        <member name="M:Vessel.Mathf.Barycentric(System.Single,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Returns the Cartesian coordinate for one axis of a point that is defined by a given triangle and two normalized barycentric (areal) coordinates.
+            </summary>
+            <param name="value1">The coordinate on one axis of vertex 1 of the defining triangle.</param>
+            <param name="value2">The coordinate on the same axis of vertex 2 of the defining triangle.</param>
+            <param name="value3">The coordinate on the same axis of vertex 3 of the defining triangle.</param>
+            <param name="amount1">The normalized barycentric (areal) coordinate b2, equal to the weighting factor for vertex 2, the coordinate of which is specified in value2.</param>
+            <param name="amount2">The normalized barycentric (areal) coordinate b3, equal to the weighting factor for vertex 3, the coordinate of which is specified in value3.</param>
+            <returns>Cartesian coordinate of the specified point with respect to the axis being used.</returns>
+        </member>
+        <member name="M:Vessel.Mathf.CatmullRom(System.Single,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Performs a Catmull-Rom interpolation using the specified positions.
+            </summary>
+            <param name="value1">The first position in the interpolation.</param>
+            <param name="value2">The second position in the interpolation.</param>
+            <param name="value3">The third position in the interpolation.</param>
+            <param name="value4">The fourth position in the interpolation.</param>
+            <param name="amount">Weighting factor.</param>
+            <returns>A position that is the result of the Catmull-Rom interpolation.</returns>
+        </member>
+        <member name="M:Vessel.Mathf.Hermite(System.Single,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Performs a Hermite spline interpolation.
+            </summary>
+            <param name="value1">Source position.</param>
+            <param name="tangent1">Source tangent.</param>
+            <param name="value2">Source position.</param>
+            <param name="tangent2">Source tangent.</param>
+            <param name="amount">Weighting factor.</param>
+            <returns>The result of the Hermite spline interpolation.</returns>
+        </member>
+        <member name="M:Vessel.Mathf.IsPowerOfTwo(System.Int32)">
+            <summary>
+            Determines if value is powered by two.
+            </summary>
+            <param name="value">A value.</param>
+            <returns><c>true</c> if <c>value</c> is powered by two; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Vessel.Mathf.FastInverseSqrt(System.Single)">
+            <summary>
+            Returns 1/√<c>num</c> using the implementation from the Quake III engine.
+            See <see href="https://github.com/id-Software/Quake-III-Arena/blob/dbe4ddb10315479fc00086f08e25d968b4b43c49/code/game/q_math.c#L552">the implementation on github</see>.
+            </summary>
+            <param name="num">The number</param>
+            <returns>1/√<c>num</c></returns>
+        </member>
+        <member name="T:Vessel.VesselLogger">
+            <summary>
+            A logger that is used exclusively by the engine. Disabled in Release Builds
+            </summary>
+        </member>
+        <member name="T:IndexFormat">
+            <summary>
+            The index format of an <see cref="!:IndexBuffer"/>.
+            </summary>
+        </member>
+        <member name="F:IndexFormat.UInt16">
+            <summary>
+            Each index is a 16-bit unsigned integer (System.UInt16).
+            </summary>
+        </member>
+        <member name="F:IndexFormat.UInt32">
+            <summary>
+            Each index is a 32-bit unsigned integer (System.UInt32).
+            </summary>
+        </member>
+    </members>
+</doc>

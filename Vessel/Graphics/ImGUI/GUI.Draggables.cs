@@ -6,9 +6,6 @@ namespace Vessel
 {
 	// Drag shit
 
-	/// <summary>
-	/// An immediate mode GUI class.
-	/// </summary>;
 	public static partial class Gui
 	{
 		#region Floats

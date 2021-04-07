@@ -1,5 +1,5 @@
-﻿using System.Numerics;
-using ImGuiNET;
+﻿using ImGuiNET;
+using System.Numerics;
 
 namespace Vessel
 {
@@ -11,9 +11,6 @@ namespace Vessel
 	//			a float array
 	// The second section of this class is a reimplementation of ImGuiNET
 
-	/// <summary>
-	/// An immediate mode GUI class.
-	/// </summary>;
 	public static partial class Gui
 	{
 		#region Containers
